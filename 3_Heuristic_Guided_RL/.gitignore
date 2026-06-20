@@ -1,0 +1,14 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# OS temporary files
+.DS_Store
+.DS_Store?
+._*
+
+# Editor / Tools configurations
+.vscode/
+.ipynb_checkpoints/
