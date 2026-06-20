@@ -12,3 +12,4 @@ __pycache__/
 # Editor / Tools configurations
 .vscode/
 .ipynb_checkpoints/
+*.tex
