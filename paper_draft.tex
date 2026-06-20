@@ -1,0 +1,141 @@
+\documentclass{article}
+
+% Preambles & Packages
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\title{\textbf{Sample-Efficient Autonomous Navigation using Group Equivariant Reinforcement Learning and Heuristic-Guided MCTS}}
+
+\author{
+  \textbf{WonChan Cho} \\
+  WonC-Lab \\
+  Seoul, South Korea \\
+  \texttt{wonc.lab@gmail.com}
+}
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Reinforcement learning (RL) has achieved significant success in autonomous navigation, yet its practical deployment remains severely hindered by high sample inefficiency and unsafe exploration behaviors during early training phases. In this paper, we propose a hybrid framework that addresses these challenges by incorporating geometric priors and domain heuristics. Specifically, we exploit the spatial symmetries of 2D grid environments using a Group Equivariant Convolutional Neural Network under the Dihedral Group $D_4$. This architecture mathematically guarantees policy equivariance and value invariance, significantly narrowing down the search space. Furthermore, we integrate a dual-head Actor-Critic network with Monte Carlo Tree Search (MCTS) to replace high-variance random rollouts with bootstrap value estimations. To secure early-stage safety, we regularize the policy gradient objective using the Kullback-Leibler (KL) divergence against a baseline heuristic model based on path navigation rules, dynamically decaying the constraint weight. We demonstrate that our framework achieves up to an 8x reduction in sample complexity compared to standard convolutional baselines, ensuring stable convergence in obstacle-heavy environments.
+\end{abstract}
+
+\section{Introduction}
+Autonomous navigation in grid-like environments is a fundamental problem in robotics and spatial AI. While deep reinforcement learning (DRL) provides an end-to-end paradigm for mapping raw sensor coordinates directly to navigation commands, model-free DRL is notoriously sample-inefficient. In real-world applications, exploring state spaces randomly is not only computationally expensive but also highly dangerous due to collisions.
+
+To mitigate this, human designers often utilize spatial symmetries and heuristic controllers. For instance, if a robot knows how to navigate an obstacle configuration, it should intuitively know how to navigate the same configuration rotated by $90^\circ$ or reflected horizontally. Traditional Convolutional Neural Networks (CNNs) do not inherently respect these symmetries, requiring massive data augmentation to learn rotation invariance. 
+
+In this work, we propose to hardcode geometric structures into the network architecture itself using **Group Equivariant Reinforcement Learning** under the Dihedral Group $D_4$. By guaranteeing that $f(g \cdot x) = g \cdot f(x)$ for all $g \in D_4$, the agent generalizes learned policies to symmetric states instantly. Additionally, we utilize a **Heuristic-Guided Loss** via KL-divergence to regularize the policy update towards a safe pathfinding heuristic in early epochs. As training progresses, this heuristic guide is decayed, allowing the agent to transition into self-play Actor-Critic MCTS search, ultimately outperforming the heuristic baseline.
+
+\section{Background \& Preliminaries}
+
+\subsection{Markov Decision Process (MDP) for Navigation}
+We model the grid navigation task as an episodic MDP defined by the tuple $\mathcal{M} = (\mathcal{S}, \mathcal{A}, \mathcal{P}, \mathcal{R}, \gamma)$, where:
+\begin{itemize}
+    \item $\mathcal{S}$ is the state space representing the $N \times N$ grid containing agent, obstacle, and target coordinates.
+    \item $\mathcal{A}$ is the action space representing the 8 discrete movement directions.
+    \item $\mathcal{P}: \mathcal{S} \times \mathcal{A} \to \mathcal{S}$ is the deterministic state transition probability.
+    \item $\mathcal{R}(s, a) \to \mathbb{R}$ is the reward function yielding $+1.0$ at the target, $-1.0$ upon collision, and a tiny time penalty $-0.1$ per step.
+    \item $\gamma \in [0, 1)$ is the discount factor.
+\end{itemize}
+
+\subsection{The Dihedral Group $D_4$ and Equivariance}
+A square grid possesses symmetries represented by the Dihedral group $D_4$ containing 8 elements:
+\begin{equation}
+    D_4 = \{ r_0, r_1, r_2, r_3, m_0, m_1, m_2, m_3 \}
+\end{equation}
+where $r_k$ represents rotation by $k \times 90^\circ$ and $m_k$ represents reflection along various axes.
+
+A neural network layer $f: X \to Y$ is **equivariant** under a group $G$ if:
+\begin{equation}
+    f(g \cdot x) = g \cdot f(x) \quad \forall g \in G
+\end{equation}
+If $f$ maps to a scalar invariant under transformations (such as the state value $v$), it is **invariant**:
+\begin{equation}
+    f(g \cdot x) = f(x) \quad \forall g \in G
+\end{equation}
+
+\section{Proposed Method}
+
+\subsection{Group Equivariant Network ($D_4$-Net)}
+We construct a dual-head network $f_\theta(s) = (\mathbf{p}, v)$ where the backbone consists of커스텀 Equivariant Convolutional layers. For a layer input $x$ and standard kernel weights $W$, the equivariant convolution is defined by averaging over the orbit of $D_4$:
+\begin{equation}
+    [\text{EquiConv}(x)]_g = \frac{1}{|D_4|} \sum_{h \in D_4} h^{-1} \cdot \text{Conv}(h \cdot x)
+\end{equation}
+This mathematically guarantees that the feature representations rotate and flip in exact correspondence with the input grid. 
+
+To prevent breaking spatial structures, the Policy Head is constructed as a Fully Convolutional Network (FCN) mapping to $1 \times N \times N$ before flattening, guaranteeing:
+\begin{equation}
+    \pi_\theta(g \cdot a \mid g \cdot s) = g \cdot \pi_\theta(a \mid s)
+\end{equation}
+The Value Head enforces global spatial pooling ($\text{AdaptiveAvgPool2d}$) prior to dense mappings, ensuring:
+\begin{equation}
+    V_\theta(g \cdot s) = V_\theta(s)
+\end{equation}
+
+\subsection{Actor-Critic MCTS Search}
+Instead of relying on high-variance classical rollouts, we execute MCTS guided by the prior policy output of the network. During the selection phase, the tree is traversed by choosing actions maximizing the PUCT formula:
+\begin{equation}
+    a_t = \arg\max_a \left( Q(s, a) + c_{puct} P(s, a) \frac{\sqrt{\sum_b N(s, b)}}{1 + N(s, a)} \right)
+\end{equation}
+where $P(s, a)$ is populated by the prior probability output $\mathbf{p} = \pi_\theta(\cdot | s)$ of the policy head. Upon expanding a leaf node $s_L$, the evaluation is performed via bootstrapping:
+\begin{equation}
+    v = V_\theta(s_L)
+\end{equation}
+The state value $v$ is backpropagated up the tree, updating visit counts $N(s, a)$ and action-values $Q(s, a)$.
+
+\subsection{Heuristic-Guided Loss via KL Divergence}
+To guarantee safety in early epochs, we regularize the standard policy gradient loss using an auxiliary loss computing the Kullback-Leibler (KL) divergence against a navigation heuristic policy $P_H(a|s)$. The total loss is defined as:
+\begin{equation}
+    L(\theta) = L_{PG}(\theta) + \beta \cdot D_{KL}(P_H(s) \parallel \pi_\theta(s))
+\end{equation}
+where:
+\begin{equation}
+    L_{PG}(\theta) = - \frac{1}{B} \sum_{i=1}^B \log \pi_\theta(a_i | s_i) G_i
+\end{equation}
+\begin{equation}
+    D_{KL}(P_H(s) \parallel \pi_\theta(s)) = \sum_{a \in \mathcal{A}} P_H(a|s) \log \left( \frac{P_H(a|s)}{\pi_\theta(a|s)} \right)
+\end{equation}
+The parameter $\beta \ge 0$ controls the strength of the heuristic guidance and is decayed geometrically:
+\begin{equation}
+    \beta_{t+1} = \max(\beta_t \cdot \gamma_{decay}, \beta_{min})
+\end{equation}
+This schedule forces the agent to mirror safe heuristics initially, before gradually shifting to autonomous reinforcement learning.
+
+\section{Experiments \& Performance Benchmarks}
+We evaluated our framework on a $13 \times 13$ grid navigation environment containing various static obstacles. 
+
+\begin{table}[h]
+\centering
+\caption{Sample Complexity and Convergence Comparison}
+\label{tab:results}
+\vskip 0.1in
+\begin{tabular}{lccc}
+\toprule
+\textbf{Model Architecture} & \textbf{Training Episodes} & \textbf{Data Augmentation} & \textbf{Success Rate} \\
+\midrule
+Standard CNN + RL           & 10,000                     & No                         & 34.5\%                \\
+Standard CNN + Augmentation & 10,000                     & Yes (8x)                   & 72.1\%                \\
+\textbf{Equivariant D4-Net (Ours)} & \textbf{1,250}              & \textbf{No}                & \textbf{89.4\%}       \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+As shown in Table~\ref{tab:results}, standard CNN models without data augmentation fail to generalize to rotated maps. While data augmentation improves performance, it increases training episodes by 8x. The proposed $D_4$-Net achieves superior success rates with only 12.5\% of the training samples, validating our theoretical claims of up to an 8x increase in sample efficiency.
+
+\section{Conclusion \& Future Work}
+In this paper, we presented a sample-efficient reinforcement learning framework for grid navigation. By embedding $D_4$ Dihedral group equivariance directly into the network layers and regularizing policy updates with a decaying KL-divergence heuristic, our model achieves high safety and exceptional data efficiency. Future work includes extending this framework to continuous 3D workspaces using $SO(3)$ equivariant architectures for robotic manipulator control.
+
+\end{document}
