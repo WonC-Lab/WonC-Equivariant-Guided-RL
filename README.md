@@ -145,8 +145,8 @@ $$L(\theta) = L_{PG}(\theta) + \beta \cdot D_{KL}(P_H(s) \parallel \pi_\theta(s)
 If you use this work, theoretical formulations, or implementation code in your research or projects, please cite it as follows:
 
 ```bibtex
-@misc{wonc_equivariant_guided_rl_2026,
-  author       = {WonC-Lab},
+@misc{wonchan_cho_equivariant_guided_rl_2026,
+  author       = {WonChan Cho},
   title        = {Advanced Grid-Based Reinforcement Learning Theories with Equivariant CNN and Heuristic-Guided Loss},
   year         = {2026},
   publisher    = {GitHub},
@@ -156,8 +156,8 @@ If you use this work, theoretical formulations, or implementation code in your r
 ```
 
 ### License
-This repository and all its theoretical derivations, mathematical formulations, and implementation codes are owned by **WonC-Lab**. They are licensed under the **MIT License**.
-Copyright (c) 2026 WonC-Lab. All rights reserved.
+This repository and all its theoretical derivations, mathematical formulations, and implementation codes are owned by **WonChan Cho**. They are licensed under the **MIT License**.
+Copyright (c) 2026 WonChan Cho. All rights reserved.
 
 ---
 
@@ -165,8 +165,8 @@ Copyright (c) 2026 WonC-Lab. All rights reserved.
 본 연구 성과, 수학적 이론 유도 공식 및 소스코드를 학술 연구나 개인 프로젝트에 인용할 경우 아래 서식을 사용해 주시기 바랍니다:
 
 ```bibtex
-@misc{wonc_equivariant_guided_rl_2026,
-  author       = {WonC-Lab},
+@misc{wonchan_cho_equivariant_guided_rl_2026,
+  author       = {WonChan Cho},
   title        = {Advanced Grid-Based Reinforcement Learning Theories with Equivariant CNN and Heuristic-Guided Loss},
   year         = {2026},
   publisher    = {GitHub},
@@ -176,5 +176,5 @@ Copyright (c) 2026 WonC-Lab. All rights reserved.
 ```
 
 ### 라이선스
-본 리포지토리의 모든 이론 공식과 소스코드의 소유권은 **WonC-Lab**에 있으며, **MIT 라이선스** 하에 제공됩니다.
-Copyright (c) 2026 WonC-Lab. All rights reserved.
+본 리포지토리의 모든 이론 공식과 소스코드의 소유권은 **WonChan Cho**에게 있으며, **MIT 라이선스** 하에 제공됩니다.
+Copyright (c) 2026 WonChan Cho. All rights reserved.
