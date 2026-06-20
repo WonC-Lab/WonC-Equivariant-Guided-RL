@@ -141,6 +141,30 @@ $$L(\theta) = L_{PG}(\theta) + \beta \cdot D_{KL}(P_H(s) \parallel \pi_\theta(s)
 
 ---
 
+## 4. Application Scenario: Autonomous Navigation & Obstacle Avoidance
+To demonstrate the generality of these core reinforcement learning concepts beyond board games, this repository includes an **Autonomous Navigation & Obstacle Avoidance Simulator** on a 2D Grid map:
+- **`autonomous_env.py`**: A 13x13 grid environment with static obstacles. The agent (robot/vehicle) moves in 8 directions (including diagonals) aiming to reach a destination coordinate safely without crashing.
+- **`train_navigation.py`**: Trains the agent using `D4EquivariantNet` (Policy-Value Network), `ActorCriticMCTS` (Search Tree), and `HeuristicGuidedLoss`. The baseline guidance is provided by a Euclidean distance heuristic model ($P_H(s)$) which decays gradually to allow pure self-exploration.
+
+### How to Run Navigation Training:
+```bash
+python train_navigation.py
+```
+
+---
+
+## 4. 응용 시나리오: 자율 주행 및 장애물 회피 제어
+이 연구 모델이 오목과 같은 게임 도메인을 넘어 범용적인 의사결정 영역에 활용될 수 있음을 증명하기 위해, 2D 격자 맵 상에서의 **자율주행 및 장애물 회피 시뮬레이션 예제**를 수록했습니다:
+- **`autonomous_env.py`**: 정적 장애물이 산재한 13x13 그리드 환경을 제공합니다. 에이전트(차량/로봇)는 충돌 없이 목적지까지 도달하는 것을 목표로 대각선 포함 8방향 액션을 수행합니다.
+- **`train_navigation.py`**: 앞서 작성된 `D4EquivariantNet`(정책-가치 망), `ActorCriticMCTS`(트리 탐색) 및 `HeuristicGuidedLoss`를 결합해 에이전트를 학습시킵니다. 목표점까지의 최단 거리 기반 방향 예측값($P_H(s)$)을 휴리스틱 규제로 사용하여 초기 학습을 매우 안전하게 안내합니다.
+
+### 자율주행 학습 실행 명령어:
+```bash
+python train_navigation.py
+```
+
+---
+
 ## Citation & Intellectual Property
 If you use this work, theoretical formulations, or implementation code in your research or projects, please cite it as follows:
 
