@@ -11,5 +11,5 @@ __pycache__/
 
 # Editor / Tools configurations
 .vscode/
-.ipynb_checkpoints/
-*.tex
+# Keep *.tex files tracked, only ignore compilation outputs
+# *.tex

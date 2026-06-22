@@ -102,12 +102,11 @@ class ActorCriticMCTS:
                 value = 0.0
 
         # 4. Backpropagation: Update tree metrics up to the root
-        # Note: Values alternate signs depending on the active player perspective
+        # Note: Values do not alternate signs for single-agent MDP
         v = value
         while node is not None:
             node.visit_count += 1
             node.value_sum += v
-            v = -v  # Flip value perspective for parent node (Minimax view)
             node = node.parent
 
     def get_action_probabilities(self, state, current_turn, game_env, num_searches=100, temp=1.0):

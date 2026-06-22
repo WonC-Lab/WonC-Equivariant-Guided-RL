@@ -76,19 +76,15 @@ class ActorCriticMCTS:
                 policy_logits, value_tensor = self.model(state_tensor)
                 
             value = value_tensor.item()
-            probs = torch.softmax(policy_logits.squeeze(0), dim=0).cpu().numpy()
-
-            # Filter valid actions (Mask illegal moves)
-            valid_actions = game_env.get_valid_actions(state, turn)
-            masked_probs = {act: probs[act] for act in valid_actions}
             
-            # Normalize probabilities
-            total_prob = sum(masked_probs.values())
-            if total_prob > 0:
-                masked_probs = {k: v / total_prob for k, v in masked_probs.items()}
-            else:
-                # Uniform fallback if neural net output is zeroed out
-                masked_probs = {k: 1.0 / len(valid_actions) for k in valid_actions}
+            # Mask invalid actions to -1e9 before softmax to prevent out-of-bounds logits from dominating
+            valid_actions = game_env.get_valid_actions(state, turn)
+            masked_logits = policy_logits.squeeze(0).clone()
+            invalid_actions = [i for i in range(169) if i not in valid_actions]
+            masked_logits[invalid_actions] = -1e9
+            
+            probs = torch.softmax(masked_logits, dim=0).cpu().numpy()
+            masked_probs = {act: probs[act] for act in valid_actions}
 
             # 3. Expansion: Expand node with filtered actions
             node.expand(masked_probs)
@@ -102,12 +98,11 @@ class ActorCriticMCTS:
                 value = 0.0
 
         # 4. Backpropagation: Update tree metrics up to the root
-        # Note: Values alternate signs depending on the active player perspective
+        # Note: Values do not alternate signs for single-agent MDP
         v = value
         while node is not None:
             node.visit_count += 1
             node.value_sum += v
-            v = -v  # Flip value perspective for parent node (Minimax view)
             node = node.parent
 
     def get_action_probabilities(self, state, current_turn, game_env, num_searches=100, temp=1.0):
