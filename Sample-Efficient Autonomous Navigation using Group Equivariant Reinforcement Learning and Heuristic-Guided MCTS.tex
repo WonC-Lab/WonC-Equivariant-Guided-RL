@@ -5,6 +5,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsfonts}
+\usepackage{amsthm}
 \usepackage{booktabs}
 \usepackage{hyperref}
 \usepackage{algorithm}
@@ -13,12 +14,15 @@
 \usepackage{geometry}
 \geometry{a4paper, margin=1in}
 
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
 \title{\textbf{Sample-Efficient Autonomous Navigation using Group Equivariant Reinforcement Learning and Heuristic-Guided MCTS}}
 
 \author{
   \textbf{WonChan Cho} \\
-  WonC-Lab \\
-  Seoul, South Korea \\
+  Department of Mathematics, Sungkyunkwan University \\
+  Suwon, Republic of Korea \\
   \texttt{wonc.lab@gmail.com}
 }
 
@@ -37,7 +41,7 @@ Autonomous navigation in grid-like environments is a fundamental problem in robo
 
 To mitigate this, human designers often utilize spatial symmetries and heuristic controllers. For instance, if a robot knows how to navigate an obstacle configuration, it should intuitively know how to navigate the same configuration rotated by $90^\circ$ or reflected horizontally. Traditional Convolutional Neural Networks (CNNs) do not inherently respect these symmetries, requiring massive data augmentation to learn rotation invariance. 
 
-In this work, we propose to hardcode geometric structures into the network architecture itself using **Group Equivariant Reinforcement Learning** under the Dihedral Group $D_4$. By guaranteeing that $f(g \cdot x) = g \cdot f(x)$ for all $g \in D_4$, the agent generalizes learned policies to symmetric states instantly. Additionally, we utilize a **Heuristic-Guided Loss** via KL-divergence to regularize the policy update towards a safe pathfinding heuristic in early epochs. As training progresses, this heuristic guide is decayed, allowing the agent to transition into self-play Actor-Critic MCTS search, ultimately outperforming the heuristic baseline.
+In this work, we propose to hardcode geometric structures into the network architecture itself using \textbf{Group Equivariant Reinforcement Learning} under the Dihedral Group $D_4$. By guaranteeing that $f(g \cdot x) = g \cdot f(x)$ for all $g \in D_4$, the agent generalizes learned policies to symmetric states instantly. Additionally, we utilize a \textbf{Heuristic-Guided Loss} via KL-divergence to regularize the policy update towards a safe pathfinding heuristic in early epochs. As training progresses, this heuristic guide is decayed, allowing the agent to transition into self-play Actor-Critic MCTS search, ultimately outperforming the heuristic baseline.
 
 \section{Background \& Preliminaries}
 
@@ -58,11 +62,11 @@ A square grid possesses symmetries represented by the Dihedral group $D_4$ conta
 \end{equation}
 where $r_k$ represents rotation by $k \times 90^\circ$ and $m_k$ represents reflection along various axes.
 
-A neural network layer $f: X \to Y$ is **equivariant** under a group $G$ if:
+A neural network layer $f: X \to Y$ is \textbf{equivariant} under a group $G$ if:
 \begin{equation}
     f(g \cdot x) = g \cdot f(x) \quad \forall g \in G
 \end{equation}
-If $f$ maps to a scalar invariant under transformations (such as the state value $v$), it is **invariant**:
+If $f$ maps to a scalar invariant under transformations (such as the state value $v$), it is \textbf{invariant}:
 \begin{equation}
     f(g \cdot x) = f(x) \quad \forall g \in G
 \end{equation}
@@ -85,6 +89,27 @@ The Value Head enforces global spatial pooling ($\text{AdaptiveAvgPool2d}$) prio
     V_\theta(g \cdot s) = V_\theta(s)
 \end{equation}
 
+We formalize and prove this property in the following theorem:
+
+\begin{theorem}[Equivariance of FCN Policy Head]
+Let $f_\theta: \mathcal{S} \to \mathbb{R}^{|\mathcal{A}| \times H \times W}$ be a $D_4$-equivariant fully convolutional neural network mapping state grids $s \in \mathcal{S}$ to feature maps. If the policy distribution $\pi_\theta(a|s)$ is constructed via a localized spatial action mapping such that action $a \in \mathcal{A}$ corresponds to a directional movement represented by a vector $d_a$, and we apply the corresponding group permutation $g \cdot a$, then the policy head is equivariant under $D_4$:
+\begin{equation}
+    \pi_\theta(g \cdot a \mid g \cdot s) = [g \cdot \pi_\theta(\cdot \mid s)]_a = \pi_\theta(a \mid s)
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $s' = g \cdot s$. By the equivariance of the Equivariant Convolutional layers, the output features transform as $f_\theta(g \cdot s) = g \cdot f_\theta(s)$. Let $\mathbf{F} = f_\theta(s) \in \mathbb{R}^{|\mathcal{A}| \times H \times W}$ denote the feature maps. The action policy is obtained by taking the softmax of the feature map values at the agent's spatial position $p_{\text{agent}}$:
+\begin{equation}
+    \pi_\theta(a \mid s) = \frac{\exp(\mathbf{F}_{a, p_{\text{agent}}})}{\sum_{a' \in \mathcal{A}} \exp(\mathbf{F}_{a', p_{\text{agent}}})}
+\end{equation}
+When the state is transformed by $g$, the agent's position becomes $g \cdot p_{\text{agent}}$. The equivariant features at the new state are $[g \cdot \mathbf{F}]_{a, g \cdot p_{\text{agent}}}$. Because the channels of $\text{EquiConv}$ transform according to the action permutation of $D_4$, we have $[g \cdot \mathbf{F}]_{g \cdot a, g \cdot p_{\text{agent}}} = \mathbf{F}_{a, p_{\text{agent}}}$. Applying the softmax over the action space yields:
+\begin{equation}
+    \pi_\theta(g \cdot a \mid g \cdot s) = \frac{\exp([g \cdot \mathbf{F}]_{g \cdot a, g \cdot p_{\text{agent}}})}{\sum_{a' \in \mathcal{A}} \exp([g \cdot \mathbf{F}]_{g \cdot a', g \cdot p_{\text{agent}}})} = \frac{\exp(\mathbf{F}_{a, p_{\text{agent}}})}{\sum_{a' \in \mathcal{A}} \exp(\mathbf{F}_{a', p_{\text{agent}}})} = \pi_\theta(a \mid s)
+\end{equation}
+This completes the proof.
+\end{proof}
+
 \subsection{Actor-Critic MCTS Search}
 Instead of relying on high-variance classical rollouts, we execute MCTS guided by the prior policy output of the network. During the selection phase, the tree is traversed by choosing actions maximizing the PUCT formula:
 \begin{equation}
@@ -94,25 +119,78 @@ where $P(s, a)$ is populated by the prior probability output $\mathbf{p} = \pi_\
 \begin{equation}
     v = V_\theta(s_L)
 \end{equation}
-The state value $v$ is backpropagated up the tree, updating visit counts $N(s, a)$ and action-values $Q(s, a)$.
+The state value $v$ is backpropagated up the tree, updating visit counts $N(s, a)$ and action-values $Q(s, a)$. Crucially, because navigation is modeled as a single-agent MDP, state value backpropagation does not alternate signs, meaning the update is cumulative:
+\begin{equation}
+    Q(s, a) \leftarrow Q(s, a) + \frac{v - Q(s, a)}{N(s, a)}
+\end{equation}
 
 \subsection{Heuristic-Guided Loss via KL Divergence}
-To guarantee safety in early epochs, we regularize the standard policy gradient loss using an auxiliary loss computing the Kullback-Leibler (KL) divergence against a navigation heuristic policy $P_H(a|s)$. The total loss is defined as:
+To guarantee safety in early epochs, we regularize the policy gradient loss using an auxiliary loss computing the Kullback-Leibler (KL) divergence against a navigation heuristic policy $P_H(a|s)$. The total loss is defined as:
 \begin{equation}
-    L(\theta) = L_{PG}(\theta) + \beta \cdot D_{KL}(P_H(s) \parallel \pi_\theta(s))
+    L(\theta) = L_{PG}(\theta) + \beta \cdot D_{KL}(P_H(s) \parallel \pi_\theta(s)) + \frac{1}{2} L_V(\theta)
 \end{equation}
 where:
 \begin{equation}
-    L_{PG}(\theta) = - \frac{1}{B} \sum_{i=1}^B \log \pi_\theta(a_i | s_i) G_i
+    L_{PG}(\theta) = - \frac{1}{B} \sum_{i=1}^B \log \pi_\theta(a_i | s_i) A_i
 \end{equation}
+Here, $A_i = G_i - V_\theta(s_i)$ is the advantage calculated using deep value bootstrapping (critic) instead of raw returns $G_i$, and $L_V(\theta) = \frac{1}{B} \sum_{i=1}^B (G_i - V_\theta(s_i))^2$ represents the Mean Squared Error (MSE) value head loss. The KL term is:
 \begin{equation}
     D_{KL}(P_H(s) \parallel \pi_\theta(s)) = \sum_{a \in \mathcal{A}} P_H(a|s) \log \left( \frac{P_H(a|s)}{\pi_\theta(a|s)} \right)
 \end{equation}
 The parameter $\beta \ge 0$ controls the strength of the heuristic guidance and is decayed geometrically:
 \begin{equation}
-    \beta_{t+1} = \max(\beta_t \cdot \gamma_{decay}, \beta_{min})
+    \beta_{t+1} = \max(\beta_t \cdot \gamma_{\text{decay}}, \beta_{\text{min}})
 \end{equation}
-This schedule forces the agent to mirror safe heuristics initially, before gradually shifting to autonomous reinforcement learning.
+
+We derive the theoretical gradient update rule for our proposed loss function below:
+
+\begin{proof}[Derivation of the Loss Gradient]
+Expanding the KL divergence term, we write:
+\begin{equation}
+    D_{KL}(P_H(s) \parallel \pi_\theta(s)) = \sum_{a \in \mathcal{A}} P_H(a|s) \log P_H(a|s) - \sum_{a \in \mathcal{A}} P_H(a|s) \log \pi_\theta(a|s)
+\end{equation}
+Since the heuristic $P_H(a|s)$ is independent of the network parameters $\theta$, taking the gradient with respect to $\theta$ yields:
+\begin{equation}
+    \nabla_\theta D_{KL}(P_H(s) \parallel \pi_\theta(s)) = - \sum_{a \in \mathcal{A}} P_H(a|s) \nabla_\theta \log \pi_\theta(a|s)
+\end{equation}
+Combining this with the policy gradient component $L_{PG}(\theta)$, we formulate the total policy parameter gradient:
+\begin{equation}
+    \nabla_\theta L_{\text{policy}}(\theta) = - \frac{1}{B} \sum_{i=1}^B \left[ \mathbb{I}(a_i = a) A_i + \beta P_H(a | s_i) \right] \nabla_\theta \log \pi_\theta(a | s_i)
+\end{equation}
+where $\mathbb{I}$ is the indicator function. This highlights that the heuristic distribution $P_H(a|s)$ acts as a targeted pseudo-advantage, steering the policy updates towards safe movements during early exploration, proportional to $\beta P_H(a|s)$.
+\end{proof}
+
+\subsection{Algorithm \& Training Pipeline}
+The integration of our modules forms a cohesive training loop outlined in Algorithm \ref{alg:training_pipeline}.
+
+\begin{algorithm}[H]
+\caption{Heuristic-Guided Actor-Critic MCTS Training}
+\label{alg:training_pipeline}
+\begin{algorithmic}[1]
+\REQUIRE Heuristic navigation policy $P_H(s)$, discount factor $\gamma$, decay rate $\gamma_{\text{decay}}$, neural net $f_\theta$, number of simulations $N_{\text{sim}}$
+\STATE Initialize weight parameter $\beta \leftarrow \beta_{\text{start}}$
+\FOR{episode $e = 1$ \TO $M$}
+    \STATE Initialize env state $s_0$, step counter $t \leftarrow 0$, trajectory $\mathcal{T} \leftarrow \emptyset$
+    \WHILE{not terminal($s_t$) and $t < T_{\text{max}}$}
+        \STATE Initialize MCTS root at $s_t$
+        \FOR{sim = $1$ \TO $N_{\text{sim}}$}
+            \STATE \textbf{Selection}: Find leaf $s_L$ maximizing $Q(s, a) + c_{\text{puct}} P(s, a) \frac{\sqrt{\sum N(s, b)}}{1 + N(s, a)}$
+            \STATE \textbf{Evaluation}: Obtain $\pi_\theta(s_L)$ and $V_\theta(s_L)$ from $f_\theta$
+            \STATE \textbf{Expansion}: Initialize children nodes with prior probabilities $P(s_L, a) = \pi_\theta(a|s_L)$
+            \STATE \textbf{Backpropagation}: Traverse back to root, updating $N(s, a) \leftarrow N(s, a) + 1$, $Q(s, a) \leftarrow Q(s, a) + \frac{V_\theta(s_L) - Q(s, a)}{N(s, a)}$
+        \ENDFOR
+        \STATE Compute search probability distribution $\pi_{\text{mcts}}(a) \propto N(s_t, a)^{1/\tau}$
+        \STATE Sample action $a_t \sim \pi_{\text{mcts}}(\cdot)$, query heuristic policy $P_H(s_t)$
+        \STATE Record step data $(s_t, a_t, P_H(s_t), \log \pi_\theta(a_t | s_t))$ in $\mathcal{T}$
+        \STATE Step environment: $s_{t+1} \sim \mathcal{P}(s_t, a_t)$
+        \STATE $t \leftarrow t + 1$
+    \ENDWHILE
+    \STATE Compute returns $G_t = \sum_{k=t}^{T} \gamma^{k-t} R_k$ and advantages $A_t = G_t - V_\theta(s_t)$ for each step in $\mathcal{T}$
+    \STATE Update network parameters $\theta$ by performing gradient descent on $L(\theta)$
+    \STATE Decay guidance weight: $\beta \leftarrow \max(\beta \cdot \beta_{\text{decay}}, \beta_{\text{min}})$
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
 
 \section{Experiments \& Performance Benchmarks}
 We evaluated our proposed framework in a $13 \times 13$ grid navigation environment containing various static obstacles. The agent was trained using PyTorch and Anaconda Python on CPU. We performed five key experiments to validate sample efficiency, safety, symmetry generalization, and hyperparameter sensitivity.
