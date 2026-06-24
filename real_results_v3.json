@@ -1,0 +1,178 @@
+[
+    {
+        "label": "D4-Equivariant + KL Guide (Proposed)",
+        "color": "#E63946",
+        "linestyle": "-",
+        "greedy_mean": 1.0,
+        "greedy_std": 0.0,
+        "mcts_mean": 1.0,
+        "mcts_std": 0.0,
+        "mean_conv_ep": 130.0,
+        "mean_collisions": 119.6,
+        "eval_episodes": [
+            50,
+            100,
+            150,
+            200,
+            250,
+            300
+        ],
+        "curve_greedy_mean": [
+            0.0,
+            0.4,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "curve_greedy_std": [
+            0.0,
+            0.48989794855663565,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "curve_mcts_mean": [
+            1.0,
+            0.6,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "curve_mcts_std": [
+            0.0,
+            0.48989794855663565,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "d4_labels": [
+            "0\u00b0 (id)",
+            "90\u00b0 CCW",
+            "180\u00b0",
+            "270\u00b0 CCW",
+            "Flip-H",
+            "Flip-H+90\u00b0",
+            "Flip-H+180\u00b0",
+            "Flip-H+270\u00b0"
+        ],
+        "generalization_greedy": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "generalization_mcts": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "seeds": [
+            42,
+            123,
+            456,
+            789,
+            2024
+        ]
+    },
+    {
+        "label": "Standard CNN + KL Guide",
+        "color": "#457B9D",
+        "linestyle": "--",
+        "greedy_mean": 0.8,
+        "greedy_std": 0.4000000000000001,
+        "mcts_mean": 1.0,
+        "mcts_std": 0.0,
+        "mean_conv_ep": 180.0,
+        "mean_collisions": 175.8,
+        "eval_episodes": [
+            50,
+            100,
+            150,
+            200,
+            250,
+            300
+        ],
+        "curve_greedy_mean": [
+            0.0,
+            0.2,
+            0.6,
+            0.4,
+            0.8,
+            0.4
+        ],
+        "curve_greedy_std": [
+            0.0,
+            0.4000000000000001,
+            0.48989794855663565,
+            0.48989794855663565,
+            0.4000000000000001,
+            0.48989794855663565
+        ],
+        "curve_mcts_mean": [
+            1.0,
+            0.6,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "curve_mcts_std": [
+            0.0,
+            0.48989794855663565,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "d4_labels": [
+            "0\u00b0 (id)",
+            "90\u00b0 CCW",
+            "180\u00b0",
+            "270\u00b0 CCW",
+            "Flip-H",
+            "Flip-H+90\u00b0",
+            "Flip-H+180\u00b0",
+            "Flip-H+270\u00b0"
+        ],
+        "generalization_greedy": [
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "generalization_mcts": [
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0
+        ],
+        "seeds": [
+            42,
+            123,
+            456,
+            789,
+            2024
+        ]
+    }
+]
