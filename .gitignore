@@ -11,5 +11,5 @@ __pycache__/
 
 # Editor / Tools configurations
 .vscode/
-# Keep *.tex files tracked, only ignore compilation outputs
-# *.tex
+# Exclude LaTeX paper source files
+*.tex
