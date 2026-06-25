@@ -8,7 +8,7 @@ A research-oriented repository detailing three mathematical formulations and com
 ## Author & Affiliation
 * **WonChan Cho**
 * **Department of Mathematics, Sungkyunkwan University, Suwon, Republic of Korea**
-* Email: `wonc.lab@gmail.com`
+* Email: `chln0124@skku.edu`
 
 ---
 
