@@ -13,7 +13,7 @@ A research-oriented repository detailing three mathematical formulations and com
 ---
 
 ## Table of Contents
-1. [English Guide](#english-guide)
+1. [Guide]
    - [1. Equivariant Neural Networks](#1-equivariant-neural-networks)
    - [2. Actor-Critic MCTS Integration](#2-actor-critic-mcts-integration)
    - [3. Heuristic-Guided Policy Gradient](#3-heuristic-guided-policy-gradient)
@@ -22,7 +22,7 @@ A research-oriented repository detailing three mathematical formulations and com
 
 ---
 
-# English Guide
+# Guide
 
 ## 1. Equivariant Neural Networks
 In 2D grid-based environments (e.g., board games or navigation maps), the grid possesses physical symmetries under rotation and reflection. The group representing these operations on a square grid is the **Dihedral Group $D_4$**, which contains 8 group elements (4 rotations and 4 reflections):
