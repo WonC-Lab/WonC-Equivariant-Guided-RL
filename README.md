@@ -60,18 +60,18 @@ By enforcing equivariance directly into the neural network architecture (rather 
 
 #### Theorem 1: Equivariance of Group Convolutional Layers
 Let $G$ be a discrete group. A group convolutional layer mapping an input feature map $f: G \to \mathbb{R}^{C_{\text{in}}}$ to an output feature map $f * \psi: G \to \mathbb{R}^{C_{\text{out}}}$ using a kernel $\psi: G \to \mathbb{R}^{C_{\text{out}} \times C_{\text{in}}}$ is defined as:
-$$\left[f * \psi\right](g) = \sum_{h \in G} \psi(h^{-1} g) f(h)$$
-Let $\rho_L(g')$ be the left regular representation acting on $f$, defined by $\left[\rho_L(g') \cdot f\right](g) = f(g'^{-1} g)$. Then the group convolution operation is equivariant with respect to $\rho_L$:
-$$\left[(\rho_L(g') \cdot f) * \psi\right] = \rho_L(g') \cdot \left[f * \psi\right]$$
+$$\left f * \psi\right(g) = \sum_{h \in G} \psi(h^{-1} g) f(h)$$
+Let $\rho_L(g')$ be the left regular representation acting on $f$, defined by $\left \rho_L(g') \cdot f\right(g) = f(g'^{-1} g)$. Then the group convolution operation is equivariant with respect to $\rho_L$:
+$$\left (\rho_L(g') \cdot f) * \psi\right = \rho_L(g') \cdot \left f * \psi\right$$
 
 *Proof:*
 Expanding the definition of group convolution under the transformed input $\rho_L(g') \cdot f$:
-$$\left[(\rho_L(g') \cdot f) * \psi\right](g) = \sum_{h \in G} \psi(h^{-1} g) \left[\rho_L(g') \cdot f\right](h) = \sum_{h \in G} \psi(h^{-1} g) f(g'^{-1} h)$$
+$$\left (\rho_L(g') \cdot f) * \psi\right(g) = \sum_{h \in G} \psi(h^{-1} g) \left \rho_L(g') \cdot f\right (h) = \sum_{h \in G} \psi(h^{-1} g) f(g'^{-1} h)$$
 Letting $h' = g'^{-1} h$, which implies $h = g' h'$. Since $h \mapsto g' h'$ is a bijection on the group $G$, we can substitute the summation index:
-$$\left[(\rho_L(g') \cdot f) * \psi\right](g) = \sum_{h' \in G} \psi((g' h')^{-1} g) f(h') = \sum_{h' \in G} \psi(h'^{-1} g'^{-1} g) f(h')$$
+$$\left (\rho_L(g') \cdot f) * \psi\right(g) = \sum_{h' \in G} \psi((g' h')^{-1} g) f(h') = \sum_{h' \in G} \psi(h'^{-1} g'^{-1} g) f(h')$$
 By definition of group convolution evaluated at the element $g'^{-1}g$, we obtain:
-$$= \left[f * \psi\right](g'^{-1} g) = \left[\rho_L(g') \cdot (f * \psi)\right](g)$$
-Thus, $\left[(\rho_L(g') \cdot f) * \psi\right] = \rho_L(g') \cdot \left[f * \psi\right]$ holds for all $g \in G$, proving that group convolution is equivariant under the group action. $\blacksquare$
+$$= \left[f * \psi\right](g'^{-1} g) = \left \rho_L(g') \cdot (f * \psi)\right (g)$$
+Thus, $\left (\rho_L(g') \cdot f) * \psi\right = \rho_L(g') \cdot \left f * \psi\right$ holds for all $g \in G$, proving that group convolution is equivariant under the group action. $\blacksquare$
 
 #### Theorem 2: Equivariance of the Output Policy under Softmax
 Let $\mathbf{F}_\theta(s) \in \mathbb{R}^{|\mathcal{A}| \times H \times W}$ be the final spatial feature map output by the equivariant layers. These features satisfy the spatial equivariance relation:
@@ -171,7 +171,7 @@ Combining the gradients of both components yields:
 $\nabla_\theta L_{\text{policy}}(\theta) = - \frac{1}{|B|} \sum_{i=1}^{|B|} \sum_{a \in \mathcal{A}} \mathbb{I}(a_i = a) A_i \nabla_\theta \log \pi_\theta(a | s_i) - \beta \cdot \frac{1}{|B|} \sum_{i=1}^{|B|} \sum_{a \in \mathcal{A}} P_H(a | s_i) \nabla_\theta \log \pi_\theta(a | s_i)$
 
 Factoring out the shared terms:
-$\nabla_\theta L_{\text{policy}}(\theta) = - \frac{1}{|B|} \sum_{i=1}^{|B|} \sum_{a \in \mathcal{A}} \left[ \mathbb{I}(a_i = a) A_i + \beta P_H(a | s_i) \right] \nabla_\theta \log \pi_\theta(a | s_i) \quad \blacksquare$
+$\nabla_\theta L_{\text{policy}}(\theta) = - \frac{1}{|B|} \sum_{i=1}^{|B|} \sum_{a \in \mathcal{A}} \left \mathbb{I}(a_i = a) A_i + \beta P_H(a | s_i) \right \nabla_\theta \log \pi_\theta(a | s_i) \quad \blacksquare$
 
 #### Interpretation
 The term $\beta P_H(a | s_i)$ mathematically functions as a **pseudo-advantage**. In early stages of training (where $\beta$ is large), the updates are heavily guided to mimic the heuristic, preventing erratic random movements. As training progresses, $\beta$ is decayed geometrically:
@@ -185,7 +185,7 @@ where $\epsilon$ is the clipping hyperparameter (typically $0.2$).
 
 #### Theorem 4: Gradient of the PPO Clipped Loss with Heuristic Guidance
 The gradient of the hybrid PPO clipped loss $L_{\text{policy}}^{\text{PPO}}(\theta) = L_{CLIP}(\theta) + \beta D_{KL}(P_H(s) \parallel \pi_\theta(s))$ with respect to $\theta$ is:
-$\nabla_\theta L_{\text{policy}}^{\text{PPO}}(\theta) = - \frac{1}{|B|} \sum_{i=1}^{|B|} \sum_{a \in \mathcal{A}} \left[ \mathbb{I}(a_i = a) M_i(\theta) r_i(\theta) A_i + \beta P_H(a | s_i) \right] \nabla_\theta \log \pi_\theta(a | s_i)$
+$\nabla_\theta L_{\text{policy}}^{\text{PPO}}(\theta) = - \frac{1}{|B|} \sum_{i=1}^{|B|} \sum_{a \in \mathcal{A}} \left \mathbb{I}(a_i = a) M_i(\theta) r_i(\theta) A_i + \beta P_H(a | s_i) \right \nabla_\theta \log \pi_\theta(a | s_i)$
 where $M_i(\theta)$ is a clipping indicator function:
 $M_i(\theta) = \begin{cases}
 1 & \text{if } r_i(\theta) A_i < \text{clip}(r_i(\theta), 1-\epsilon, 1+\epsilon) A_i \\
@@ -205,7 +205,7 @@ $\nabla_\theta L_{CLIP}(\theta) = - \frac{1}{|B|} \sum_{i=1}^{|B|} \sum_{a \in \
 Adding the gradient of the KL Divergence term derived in the previous section:
 $\nabla_\theta L_{\text{policy}}^{\text{PPO}}(\theta) = \nabla_\theta L_{CLIP}(\theta) + \beta \nabla_\theta D_{KL}(P_H(s) \parallel \pi_\theta(s))$
 $= - \frac{1}{|B|} \sum_{i=1}^{|B|} \sum_{a \in \mathcal{A}} \mathbb{I}(a_i = a) M_i(\theta) r_i(\theta) A_i \nabla_\theta \log \pi_\theta(a | s_i) - \beta \cdot \frac{1}{|B|} \sum_{i=1}^{|B|} \sum_{a \in \mathcal{A}} P_H(a | s_i) \nabla_\theta \log \pi_\theta(a | s_i)$
-$= - \frac{1}{|B|} \sum_{i=1}^{|B|} \sum_{a \in \mathcal{A}} \left[ \mathbb{I}(a_i = a) M_i(\theta) r_i(\theta) A_i + \beta P_H(a | s_i) \right] \nabla_\theta \log \pi_\theta(a | s_i) \quad \blacksquare$
+$= - \frac{1}{|B|} \sum_{i=1}^{|B|} \sum_{a \in \mathcal{A}} \left \mathbb{I}(a_i = a) M_i(\theta) r_i(\theta) A_i + \beta P_H(a | s_i) \right \nabla_\theta \log \pi_\theta(a | s_i) \quad \blacksquare$
 
 ---
 
