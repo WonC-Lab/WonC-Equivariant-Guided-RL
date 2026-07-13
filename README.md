@@ -43,7 +43,7 @@ $D_4 = \langle r, m \mid r^4 = e, m^2 = e, mrm = r^{-1} \rangle = \{ r^k m^j \mi
 where $r$ represents a $90^\circ$ counter-clockwise rotation, and $m$ represents a horizontal reflection.
 
 Let the state space $S$ be represented as the space of square grid configurations $L^2(\mathcal{G}, \mathbb{R}^C) \cong \mathbb{R}^{C \times H \times W}$, where $\mathcal{G} \subset \mathbb{Z}^2$ is the grid coordinates, $C$ is the number of channels, and $H, W$ are the height and width of the grid. The action of a group element $g \in D_4$ on a grid coordinate $p \in \mathcal{G}$ is denoted by $g \cdot p$. We define the input representation (group action) $\rho_{\text{in}}(g)$ on a state $s \in S$ as:
-$$\left[\rho_{\text{in}}(g) \cdot s\right](p) = \rho_{\text{chan}}(g) s(g^{-1} \cdot p)$$
+$$\left[\rho_{\text{in}}(g) \cdot s\right] (p) = \rho_{\text{chan}}(g) s(g^{-1} \cdot p)$$
 where $\rho_{\text{chan}}(g) \in \mathbb{R}^{C \times C}$ represents how the channel dimensions transform under the group element $g$.
 
 Let $\mathcal{A}$ represent the action space (e.g., 8-directional movement directions). The action of $D_4$ on $\mathcal{A}$ is given by a permutation representation $\rho_{\text{out}}(g) \in \mathbb{R}^{|\mathcal{A}| \times |\mathcal{A}|}$ which maps each action $a \in \mathcal{A}$ to $g \cdot a$.
@@ -60,17 +60,17 @@ By enforcing equivariance directly into the neural network architecture (rather 
 
 #### Theorem 1: Equivariance of Group Convolutional Layers
 Let $G$ be a discrete group. A group convolutional layer mapping an input feature map $f: G \to \mathbb{R}^{C_{\text{in}}}$ to an output feature map $f * \psi: G \to \mathbb{R}^{C_{\text{out}}}$ using a kernel $\psi: G \to \mathbb{R}^{C_{\text{out}} \times C_{\text{in}}}$ is defined as:
-$$\left[f * \psi\right](g) = \sum_{h \in G} \psi(h^{-1} g) f(h)$$
-Let $\rho_L(g')$ be the left regular representation acting on $f$, defined by $\left[\rho_L(g') \cdot f\right](g) = f(g'^{-1} g)$. Then the group convolution operation is equivariant with respect to $\rho_L$:
+$$\left[f * \psi\right] (g) = \sum_{h \in G} \psi(h^{-1} g) f(h)$$
+Let $\rho_L(g')$ be the left regular representation acting on $f$, defined by $\left[\rho_L(g') \cdot f\right] (g) = f(g'^{-1} g)$. Then the group convolution operation is equivariant with respect to $\rho_L$:
 $$\left[(\rho_L(g') \cdot f) * \psi\right] = \rho_L(g') \cdot \left[f * \psi\right]$$
 
 *Proof:*
 Expanding the definition of group convolution under the transformed input $\rho_L(g') \cdot f$:
-$$\left[(\rho_L(g') \cdot f) * \psi\right](g) = \sum_{h \in G} \psi(h^{-1} g) \left[\rho_L(g') \cdot f\right](h) = \sum_{h \in G} \psi(h^{-1} g) f(g'^{-1} h)$$
+$$\left[(\rho_L(g') \cdot f) * \psi\right] (g) = \sum_{h \in G} \psi(h^{-1} g) \left[\rho_L(g') \cdot f\right] (h) = \sum_{h \in G} \psi(h^{-1} g) f(g'^{-1} h)$$
 Letting $h' = g'^{-1} h$, which implies $h = g' h'$. Since $h \mapsto g' h'$ is a bijection on the group $G$, we can substitute the summation index:
-$$\left[(\rho_L(g') \cdot f) * \psi\right](g) = \sum_{h' \in G} \psi((g' h')^{-1} g) f(h') = \sum_{h' \in G} \psi(h'^{-1} g'^{-1} g) f(h')$$
+$$\left[(\rho_L(g') \cdot f) * \psi\right] (g) = \sum_{h' \in G} \psi((g' h')^{-1} g) f(h') = \sum_{h' \in G} \psi(h'^{-1} g'^{-1} g) f(h')$$
 By definition of group convolution evaluated at the element $g'^{-1}g$, we obtain:
-$$= \left[f * \psi\right](g'^{-1} g) = \left[\rho_L(g') \cdot (f * \psi)\right](g)$$
+$$= \left[f * \psi\right] (g'^{-1} g) = \left[\rho_L(g') \cdot (f * \psi)\right] (g)$$
 Thus, $\left[(\rho_L(g') \cdot f) * \psi\right] = \rho_L(g') \cdot \left[f * \psi\right]$ holds for all $g \in G$, proving that group convolution is equivariant under the group action. $\blacksquare$
 
 #### Theorem 2: Equivariance of the Output Policy under Softmax
