@@ -8,12 +8,12 @@ A research-oriented repository detailing three mathematical formulations and com
 ## Author & Affiliation
 * **WonChan Cho**
 * **Department of Mathematics, Sungkyunkwan University, Suwon, Republic of Korea**
-* Email: `wonc.lab@gmail.com`
+* Email: `chln0124@skku.edu`
 
 ---
 
 ## Table of Contents
-1. [English Guide](#english-guide)
+1. [Guide]
    - [1. Equivariant Neural Networks](#1-equivariant-neural-networks)
      - [Group Definition & Actions](#group-definition--actions)
      - [Equivariance Property](#equivariance-property)
@@ -31,7 +31,7 @@ A research-oriented repository detailing three mathematical formulations and com
 
 ---
 
-# English Guide
+# Guide
 
 ## 1. Equivariant Neural Networks
 
