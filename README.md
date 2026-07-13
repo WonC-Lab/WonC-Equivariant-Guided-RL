@@ -43,7 +43,7 @@ $D_4 = \langle r, m \mid r^4 = e, m^2 = e, mrm = r^{-1} \rangle = \{ r^k m^j \mi
 where $r$ represents a $90^\circ$ counter-clockwise rotation, and $m$ represents a horizontal reflection.
 
 Let the state space $S$ be represented as the space of square grid configurations $L^2(\mathcal{G}, \mathbb{R}^C) \cong \mathbb{R}^{C \times H \times W}$, where $\mathcal{G} \subset \mathbb{Z}^2$ is the grid coordinates, $C$ is the number of channels, and $H, W$ are the height and width of the grid. The action of a group element $g \in D_4$ on a grid coordinate $p \in \mathcal{G}$ is denoted by $g \cdot p$. We define the input representation (group action) $\rho_{\text{in}}(g)$ on a state $s \in S$ as:
-$$\left \rho_{\text{in}}(g) \cdot s\right(p) = \rho_{\text{chan}}(g) s(g^{-1} \cdot p)$$
+$$\left\rho_{\text{in}}(g) \cdot s\right(p) = \rho_{\text{chan}}(g) s(g^{-1} \cdot p)$$
 where $\rho_{\text{chan}}(g) \in \mathbb{R}^{C \times C}$ represents how the channel dimensions transform under the group element $g$.
 
 Let $\mathcal{A}$ represent the action space (e.g., 8-directional movement directions). The action of $D_4$ on $\mathcal{A}$ is given by a permutation representation $\rho_{\text{out}}(g) \in \mathbb{R}^{|\mathcal{A}| \times |\mathcal{A}|}$ which maps each action $a \in \mathcal{A}$ to $g \cdot a$.
