@@ -221,6 +221,28 @@ cd "Sample-Efficient Autonomous Navigation using Group Equivariant Reinforcement
 python run_academic_experiments.py
 ```
 
+### Experimental Results Gallery
+
+#### 1. Sample Efficiency Curves
+![Sample Efficiency](sample_efficiency.png)
+*Compares convergence rate against baselines; demonstrating ~8× speedup.*
+
+#### 2. Ablation Study
+![Ablation Study](ablation_study.png)
+*Shows convergence speedup contributed by each component (Equivariance, MCTS, Heuristic guidance).*
+
+#### 3. Zero-Shot Generalization
+![Generalization Test](generalization_test.png)
+*Validates policy performance on all 8 $D_4$ group transformations.*
+
+#### 4. Exploration Safety Analysis
+![Exploration Safety](exploration_safety.png)
+*Visualizes reduction in early training crashes due to KL heuristic guidance.*
+
+#### 5. MCTS Simulation Count Sensitivity
+![MCTS Sensitivity](mcts_sensitivity.png)
+*Compares MCTS simulation budgets $N_{\mathrm{search}}$.*
+
 ---
 
 # Citation & Intellectual Property
