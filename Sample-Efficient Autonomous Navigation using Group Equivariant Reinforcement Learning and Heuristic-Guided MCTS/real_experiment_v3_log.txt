@@ -1,0 +1,155 @@
+ Apple Silicon: Forcing CPU (MPS synchronization slows sequential MCTS)
+
+=================================================================
+  real_experiment_v3  ─  Train First, Search Later
+  Setting : 5 Seeds × 300 Ep × 2 Models
+  Warm-up : 60 Ep → AC+KL: 240 Ep
+  Entropy : ENT_COEF = 0.01  (policy collapse prevention)
+  D4 Gen  : ALL 8 group elements (4 rotations + 4 reflections)
+  Device  : cpu
+=================================================================
+
+=================================================================
+  Model: D4-Equivariant + KL Guide (Proposed)
+=================================================================
+
+  [Seed 1/5: 42]
+    Ep   50/300 [WarmUp] Greedy:   0.0%  MCTS: 100.0%  Loss: 0.1209  β: 0.500  Coll: 0
+    Ep  100/300 [AC+KL  ] Greedy:   0.0%  MCTS: 100.0%  Loss: 0.4192  β: 0.500  Coll: 30
+    Ep  150/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.3551  β: 0.500  Coll: 57
+    Ep  200/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: -0.2591  β: 0.500  Coll: 84
+    Ep  250/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.3667  β: 0.500  Coll: 112
+    Ep  300/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: -0.3473  β: 0.500  Coll: 132
+  → Seed 42: Greedy 100.0%  MCTS 100.0%  Conv@150  Coll:132  [best ckpt greedy=100.0%]
+
+  [Seed 2/5: 123]
+    Ep   50/300 [WarmUp] Greedy:   0.0%  MCTS: 100.0%  Loss: 0.1069  β: 0.500  Coll: 0
+    Ep  100/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.2853  β: 0.500  Coll: 28
+    Ep  150/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.4883  β: 0.500  Coll: 57
+    Ep  200/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: -0.2323  β: 0.500  Coll: 83
+    Ep  250/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: -0.0758  β: 0.500  Coll: 100
+    Ep  300/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: -0.2053  β: 0.500  Coll: 122
+  → Seed 123: Greedy 100.0%  MCTS 100.0%  Conv@100  Coll:122  [best ckpt greedy=100.0%]
+
+  [Seed 3/5: 456]
+    Ep   50/300 [WarmUp] Greedy:   0.0%  MCTS: 100.0%  Loss: 0.2775  β: 0.500  Coll: 0
+    Ep  100/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: -0.3854  β: 0.500  Coll: 26
+    Ep  150/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: -0.3325  β: 0.500  Coll: 56
+    Ep  200/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: -0.2917  β: 0.500  Coll: 82
+    Ep  250/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: -0.3629  β: 0.500  Coll: 98
+    Ep  300/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.1852  β: 0.500  Coll: 112
+  → Seed 456: Greedy 100.0%  MCTS 100.0%  Conv@100  Coll:112  [best ckpt greedy=100.0%]
+
+  [Seed 4/5: 789]
+    Ep   50/300 [WarmUp] Greedy:   0.0%  MCTS: 100.0%  Loss: -0.0145  β: 0.500  Coll: 0
+    Ep  100/300 [AC+KL  ] Greedy:   0.0%  MCTS:   0.0%  Loss: -0.3513  β: 0.500  Coll: 28
+    Ep  150/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.8194  β: 0.500  Coll: 55
+    Ep  200/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.9518  β: 0.500  Coll: 83
+    Ep  250/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 1.1227  β: 0.500  Coll: 99
+    Ep  300/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: -0.2060  β: 0.500  Coll: 118
+  → Seed 789: Greedy 100.0%  MCTS 100.0%  Conv@150  Coll:118  [best ckpt greedy=100.0%]
+
+  [Seed 5/5: 2024]
+    Ep   50/300 [WarmUp] Greedy:   0.0%  MCTS: 100.0%  Loss: 0.0166  β: 0.500  Coll: 0
+    Ep  100/300 [AC+KL  ] Greedy:   0.0%  MCTS:   0.0%  Loss: 0.3593  β: 0.500  Coll: 33
+    Ep  150/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.3651  β: 0.500  Coll: 62
+    Ep  200/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.7356  β: 0.500  Coll: 84
+    Ep  250/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 1.5557  β: 0.500  Coll: 104
+    Ep  300/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: -0.1352  β: 0.500  Coll: 114
+  → Seed 2024: Greedy 100.0%  MCTS 100.0%  Conv@150  Coll:114  [best ckpt greedy=100.0%]
+
+  ★ D4-Equivariant + KL Guide (Proposed)
+    Greedy:  100.0% ± 0.0%
+    +MCTS:   100.0% ± 0.0%
+    Conv Ep: 130  Collisions: 120
+
+  --- D4 Zero-Shot Generalization ---
+    D4[0] 0° (id)             Greedy: 100.0%  MCTS: 100.0%
+    D4[1] 90° CCW             Greedy: 100.0%  MCTS: 100.0%
+    D4[2] 180°                Greedy: 100.0%  MCTS: 100.0%
+    D4[3] 270° CCW            Greedy: 100.0%  MCTS: 100.0%
+    D4[4] Flip-H              Greedy: 100.0%  MCTS: 100.0%
+    D4[5] Flip-H+90°          Greedy: 100.0%  MCTS: 100.0%
+    D4[6] Flip-H+180°         Greedy: 100.0%  MCTS: 100.0%
+    D4[7] Flip-H+270°         Greedy: 100.0%  MCTS: 100.0%
+
+=================================================================
+  Model: Standard CNN + KL Guide
+=================================================================
+
+  [Seed 1/5: 42]
+    Ep   50/300 [WarmUp] Greedy:   0.0%  MCTS: 100.0%  Loss: 0.1118  β: 0.500  Coll: 0
+    Ep  100/300 [AC+KL  ] Greedy:   0.0%  MCTS: 100.0%  Loss: -0.0003  β: 0.500  Coll: 31
+    Ep  150/300 [AC+KL  ] Greedy:   0.0%  MCTS: 100.0%  Loss: 0.1070  β: 0.500  Coll: 71
+    Ep  200/300 [AC+KL  ] Greedy:   0.0%  MCTS: 100.0%  Loss: 0.1812  β: 0.500  Coll: 106
+    Ep  250/300 [AC+KL  ] Greedy:   0.0%  MCTS: 100.0%  Loss: 0.1356  β: 0.500  Coll: 149
+    Ep  300/300 [AC+KL  ] Greedy:   0.0%  MCTS: 100.0%  Loss: -0.2916  β: 0.500  Coll: 186
+  → Seed 42: Greedy 0.0%  MCTS 100.0%  Conv@300  Coll:186  [best ckpt greedy=0.0%]
+
+  [Seed 2/5: 123]
+    Ep   50/300 [WarmUp] Greedy:   0.0%  MCTS: 100.0%  Loss: 0.0611  β: 0.500  Coll: 0
+    Ep  100/300 [AC+KL  ] Greedy:   0.0%  MCTS: 100.0%  Loss: 0.1259  β: 0.500  Coll: 34
+    Ep  150/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.2386  β: 0.500  Coll: 75
+    Ep  200/300 [AC+KL  ] Greedy:   0.0%  MCTS: 100.0%  Loss: -0.1092  β: 0.500  Coll: 120
+    Ep  250/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.1261  β: 0.500  Coll: 161
+    Ep  300/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: -0.3280  β: 0.500  Coll: 197
+  → Seed 123: Greedy 100.0%  MCTS 100.0%  Conv@150  Coll:197  [best ckpt greedy=100.0%]
+
+  [Seed 3/5: 456]
+    Ep   50/300 [WarmUp] Greedy:   0.0%  MCTS: 100.0%  Loss: 0.5768  β: 0.500  Coll: 0
+    Ep  100/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: -0.2021  β: 0.500  Coll: 31
+    Ep  150/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.0983  β: 0.500  Coll: 71
+    Ep  200/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.2544  β: 0.500  Coll: 106
+    Ep  250/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.2976  β: 0.500  Coll: 136
+    Ep  300/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.8203  β: 0.500  Coll: 163
+  → Seed 456: Greedy 100.0%  MCTS 100.0%  Conv@100  Coll:163  [best ckpt greedy=100.0%]
+
+  [Seed 4/5: 789]
+    Ep   50/300 [WarmUp] Greedy:   0.0%  MCTS: 100.0%  Loss: -0.0182  β: 0.500  Coll: 0
+    Ep  100/300 [AC+KL  ] Greedy:   0.0%  MCTS:   0.0%  Loss: -0.2858  β: 0.500  Coll: 32
+    Ep  150/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.1892  β: 0.500  Coll: 69
+    Ep  200/300 [AC+KL  ] Greedy:   0.0%  MCTS: 100.0%  Loss: 0.5974  β: 0.500  Coll: 108
+    Ep  250/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: -0.3584  β: 0.500  Coll: 139
+    Ep  300/300 [AC+KL  ] Greedy:   0.0%  MCTS: 100.0%  Loss: 0.2553  β: 0.500  Coll: 171
+  → Seed 789: Greedy 100.0%  MCTS 100.0%  Conv@150  Coll:171  [best ckpt greedy=100.0%]
+
+  [Seed 5/5: 2024]
+    Ep   50/300 [WarmUp] Greedy:   0.0%  MCTS: 100.0%  Loss: 0.0521  β: 0.500  Coll: 0
+    Ep  100/300 [AC+KL  ] Greedy:   0.0%  MCTS:   0.0%  Loss: 0.3609  β: 0.500  Coll: 29
+    Ep  150/300 [AC+KL  ] Greedy:   0.0%  MCTS: 100.0%  Loss: 0.0909  β: 0.500  Coll: 72
+    Ep  200/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.2466  β: 0.500  Coll: 101
+    Ep  250/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 1.0583  β: 0.500  Coll: 130
+    Ep  300/300 [AC+KL  ] Greedy:   0.0%  MCTS: 100.0%  Loss: 0.2497  β: 0.500  Coll: 162
+  → Seed 2024: Greedy 100.0%  MCTS 100.0%  Conv@200  Coll:162  [best ckpt greedy=100.0%]
+
+  ★ Standard CNN + KL Guide
+    Greedy:  80.0% ± 40.0%
+    +MCTS:   100.0% ± 0.0%
+    Conv Ep: 180  Collisions: 176
+
+  --- D4 Zero-Shot Generalization ---
+    D4[0] 0° (id)             Greedy: 100.0%  MCTS: 100.0%
+    D4[1] 90° CCW             Greedy:   0.0%  MCTS:   0.0%
+    D4[2] 180°                Greedy:   0.0%  MCTS:   0.0%
+    D4[3] 270° CCW            Greedy:   0.0%  MCTS:   0.0%
+    D4[4] Flip-H              Greedy:   0.0%  MCTS:   0.0%
+    D4[5] Flip-H+90°          Greedy:   0.0%  MCTS: 100.0%
+    D4[6] Flip-H+180°         Greedy:   0.0%  MCTS:   0.0%
+    D4[7] Flip-H+270°         Greedy:   0.0%  MCTS:   0.0%
+
+  Results saved: real_results_v3.json
+
+  Plot saved: real_results_plots_v3.png
+
+=================================================================
+  Total duration: 10.1 min
+=================================================================
+  D4-Equivariant + KL Guide (Proposed)              
+    Greedy : 100.0% ± 0.0%
+    +MCTS  : 100.0% ± 0.0%
+    D4 Gen (Greedy): 100%, 100%, 100%, 100%, 100%, 100%, 100%, 100%
+  Standard CNN + KL Guide                           
+    Greedy : 80.0% ± 40.0%
+    +MCTS  : 100.0% ± 0.0%
+    D4 Gen (Greedy): 100%, 0%, 0%, 0%, 0%, 0%, 0%, 0%
+=================================================================

@@ -1,0 +1,167 @@
+{
+    "Proposed": {
+        "label": "Proposed",
+        "color": "#E63946",
+        "linestyle": "-",
+        "greedy_mean": 0.5,
+        "greedy_std": 0.12,
+        "mcts_mean": 0.2,
+        "mcts_std": 0.2,
+        "mean_conv_ep": 5.0,
+        "mean_collisions": 2.0,
+        "eval_episodes": [
+            2,
+            4
+        ],
+        "val_greedy_mean": [
+            0.325,
+            0.5
+        ],
+        "val_greedy_std": [
+            0.125,
+            0.05000000000000002
+        ],
+        "val_mcts_mean": [
+            0.0,
+            0.225
+        ],
+        "val_mcts_std": [
+            0.0,
+            0.225
+        ],
+        "density_results": {
+            "7": {
+                "mean": 0.6333333333333333,
+                "std": 0.16666666666666669
+            },
+            "11": {
+                "mean": 0.43333333333333335,
+                "std": 0.16666666666666666
+            },
+            "15": {
+                "mean": 0.30000000000000004,
+                "std": 0.1
+            }
+        },
+        "generalization_greedy": [
+            0.6,
+            0.6,
+            0.6,
+            0.6,
+            0.6,
+            0.6,
+            0.6,
+            0.6
+        ]
+    },
+    "Standard CNN + KL Guide": {
+        "label": "Standard CNN + KL Guide",
+        "color": "#457B9D",
+        "linestyle": "--",
+        "greedy_mean": 0.06,
+        "greedy_std": 0.06,
+        "mcts_mean": 0.0,
+        "mcts_std": 0.0,
+        "mean_conv_ep": 5.0,
+        "mean_collisions": 1.5,
+        "eval_episodes": [
+            2,
+            4
+        ],
+        "val_greedy_mean": [
+            0.0,
+            0.05
+        ],
+        "val_greedy_std": [
+            0.0,
+            0.05
+        ],
+        "val_mcts_mean": [
+            0.0,
+            0.1
+        ],
+        "val_mcts_std": [
+            0.0,
+            0.1
+        ],
+        "density_results": {
+            "7": {
+                "mean": 0.13333333333333333,
+                "std": 0.13333333333333333
+            },
+            "11": {
+                "mean": 0.1,
+                "std": 0.1
+            },
+            "15": {
+                "mean": 0.06666666666666667,
+                "std": 0.06666666666666667
+            }
+        },
+        "generalization_greedy": [
+            0.13333333333333333,
+            0.0,
+            0.0,
+            0.6,
+            0.6,
+            0.1,
+            0.0,
+            0.0
+        ]
+    },
+    "Standard CNN + 8x Aug": {
+        "label": "Standard CNN + 8x Aug",
+        "color": "#FFB703",
+        "linestyle": "-.",
+        "greedy_mean": 0.06,
+        "greedy_std": 0.06,
+        "mcts_mean": 0.0,
+        "mcts_std": 0.0,
+        "mean_conv_ep": 5.0,
+        "mean_collisions": 1.5,
+        "eval_episodes": [
+            2,
+            4
+        ],
+        "val_greedy_mean": [
+            0.0,
+            0.05
+        ],
+        "val_greedy_std": [
+            0.0,
+            0.05
+        ],
+        "val_mcts_mean": [
+            0.0,
+            0.0
+        ],
+        "val_mcts_std": [
+            0.0,
+            0.0
+        ],
+        "density_results": {
+            "7": {
+                "mean": 0.13333333333333333,
+                "std": 0.13333333333333333
+            },
+            "11": {
+                "mean": 0.1,
+                "std": 0.1
+            },
+            "15": {
+                "mean": 0.06666666666666667,
+                "std": 0.06666666666666667
+            }
+        },
+        "generalization_greedy": [
+            0.13333333333333333,
+            0.0,
+            0.0,
+            0.6,
+            0.6,
+            0.1,
+            0.0,
+            0.0
+        ]
+    }
+}

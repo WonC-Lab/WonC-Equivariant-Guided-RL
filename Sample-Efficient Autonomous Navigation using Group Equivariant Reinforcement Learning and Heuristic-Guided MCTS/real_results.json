@@ -1,0 +1,142 @@
+[
+    {
+        "label": "D4-Equivariant + KL Guide (Proposed)",
+        "color": "#E63946",
+        "linestyle": "-",
+        "greedy_mean": 0.8,
+        "greedy_std": 0.4,
+        "mcts_mean": 0.8,
+        "mcts_std": 0.4,
+        "mean_conv_ep": 190.0,
+        "mean_collisions": 50.8,
+        "eval_episodes": [
+            50,
+            100,
+            150,
+            200,
+            250,
+            300
+        ],
+        "curve_greedy_mean": [
+            0.0,
+            0.2,
+            0.2,
+            0.6,
+            0.8,
+            0.8
+        ],
+        "curve_greedy_std": [
+            0.0,
+            0.4,
+            0.4000000000000001,
+            0.48989794855663565,
+            0.4,
+            0.4
+        ],
+        "curve_mcts_mean": [
+            0.0,
+            0.0,
+            0.4,
+            0.6,
+            0.8,
+            0.8
+        ],
+        "curve_mcts_std": [
+            0.0,
+            0.0,
+            0.48989794855663565,
+            0.48989794855663565,
+            0.4,
+            0.4
+        ],
+        "generalization_greedy": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "generalization_mcts": [
+            1.0,
+            1.0,
+            0.0,
+            1.0
+        ],
+        "seeds": [
+            42,
+            123,
+            456,
+            789,
+            1024
+        ]
+    },
+    {
+        "label": "Standard CNN + KL Guide",
+        "color": "#457B9D",
+        "linestyle": "--",
+        "greedy_mean": 1.0,
+        "greedy_std": 0.0,
+        "mcts_mean": 1.0,
+        "mcts_std": 0.0,
+        "mean_conv_ep": 100.0,
+        "mean_collisions": 30.6,
+        "eval_episodes": [
+            50,
+            100,
+            150,
+            200,
+            250,
+            300
+        ],
+        "curve_greedy_mean": [
+            0.8,
+            0.8,
+            0.8,
+            0.8,
+            0.8,
+            1.0
+        ],
+        "curve_greedy_std": [
+            0.4,
+            0.4,
+            0.4,
+            0.4,
+            0.4,
+            0.0
+        ],
+        "curve_mcts_mean": [
+            0.8,
+            0.8,
+            0.8,
+            0.8,
+            1.0,
+            1.0
+        ],
+        "curve_mcts_std": [
+            0.4,
+            0.4,
+            0.4,
+            0.4,
+            0.0,
+            0.0
+        ],
+        "generalization_greedy": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "generalization_mcts": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "seeds": [
+            42,
+            123,
+            456,
+            789,
+            1024
+        ]
+    }
+]

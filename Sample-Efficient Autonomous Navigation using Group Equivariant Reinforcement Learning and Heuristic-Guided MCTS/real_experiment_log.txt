@@ -1,0 +1,130 @@
+ℹ️   Apple Silicon 사용 중 (CPU 강제 사용로 지연 방지)
+
+=================================================================
+ 진짜 논문 실험 시작  ─  Train First, Search Later
+ 설정: 5 Seeds × 300 Ep × 2 모델
+ Warm-up: 80 Ep → Actor-Critic+KL: 220 Ep
+ 디바이스: cpu
+=================================================================
+
+=================================================================
+  학습: D4-Equivariant + KL Guide (Proposed)
+=================================================================
+
+  [Seed 1/5: 42]
+    Ep   50/300 [WarmUp] Greedy:   0.0%  MCTS:   0.0%  Loss: 0.9528  β: 0.500  Coll: 0
+    Ep  100/300 [AC+KL  ] Greedy:   0.0%  MCTS:   0.0%  Loss: -0.0269  β: 0.500  Coll: 10
+    Ep  150/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: -0.3455  β: 0.500  Coll: 17
+    Ep  200/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.7732  β: 0.500  Coll: 22
+    Ep  250/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: -0.2599  β: 0.500  Coll: 26
+    Ep  300/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: -0.0340  β: 0.500  Coll: 31
+  → Seed 42: Greedy 100.0%  MCTS 100.0%  Conv@150  Coll:31
+
+  [Seed 2/5: 123]
+    Ep   50/300 [WarmUp] Greedy:   0.0%  MCTS:   0.0%  Loss: 0.5448  β: 0.500  Coll: 0
+    Ep  100/300 [AC+KL  ] Greedy:   0.0%  MCTS:   0.0%  Loss: -0.1150  β: 0.500  Coll: 5
+    Ep  150/300 [AC+KL  ] Greedy:   0.0%  MCTS:   0.0%  Loss: 0.7505  β: 0.500  Coll: 11
+    Ep  200/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 1.3112  β: 0.500  Coll: 12
+    Ep  250/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.9721  β: 0.500  Coll: 13
+    Ep  300/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: -0.1188  β: 0.500  Coll: 15
+  → Seed 123: Greedy 100.0%  MCTS 100.0%  Conv@200  Coll:15
+
+  [Seed 3/5: 456]
+    Ep   50/300 [WarmUp] Greedy:   0.0%  MCTS:   0.0%  Loss: 0.4258  β: 0.500  Coll: 0
+    Ep  100/300 [AC+KL  ] Greedy:   0.0%  MCTS:   0.0%  Loss: -0.1434  β: 0.500  Coll: 8
+    Ep  150/300 [AC+KL  ] Greedy:   0.0%  MCTS:   0.0%  Loss: -0.0096  β: 0.500  Coll: 20
+    Ep  200/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: -0.2606  β: 0.500  Coll: 26
+    Ep  250/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.0256  β: 0.500  Coll: 34
+    Ep  300/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.0183  β: 0.500  Coll: 40
+  → Seed 456: Greedy 100.0%  MCTS 100.0%  Conv@200  Coll:40
+
+  [Seed 4/5: 789]
+    Ep   50/300 [WarmUp] Greedy:   0.0%  MCTS:   0.0%  Loss: 1.9646  β: 0.500  Coll: 0
+    Ep  100/300 [AC+KL  ] Greedy: 100.0%  MCTS:   0.0%  Loss: -0.2118  β: 0.500  Coll: 5
+    Ep  150/300 [AC+KL  ] Greedy:   0.0%  MCTS: 100.0%  Loss: 0.2807  β: 0.500  Coll: 11
+    Ep  200/300 [AC+KL  ] Greedy:   0.0%  MCTS:   0.0%  Loss: 0.4149  β: 0.500  Coll: 20
+    Ep  250/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: -0.1449  β: 0.500  Coll: 27
+    Ep  300/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.0023  β: 0.500  Coll: 31
+  → Seed 789: Greedy 100.0%  MCTS 100.0%  Conv@100  Coll:31
+
+  [Seed 5/5: 1024]
+    Ep   50/300 [WarmUp] Greedy:   0.0%  MCTS:   0.0%  Loss: 1.7549  β: 0.500  Coll: 0
+    Ep  100/300 [AC+KL  ] Greedy:   0.0%  MCTS:   0.0%  Loss: 1.2585  β: 0.500  Coll: 13
+    Ep  150/300 [AC+KL  ] Greedy:   0.0%  MCTS:   0.0%  Loss: 0.6124  β: 0.500  Coll: 57
+    Ep  200/300 [AC+KL  ] Greedy:   0.0%  MCTS:   0.0%  Loss: 0.3616  β: 0.500  Coll: 99
+    Ep  250/300 [AC+KL  ] Greedy:   0.0%  MCTS:   0.0%  Loss: 0.0723  β: 0.500  Coll: 134
+    Ep  300/300 [AC+KL  ] Greedy:   0.0%  MCTS:   0.0%  Loss: 0.6450  β: 0.500  Coll: 137
+  → Seed 1024: Greedy 0.0%  MCTS 0.0%  Conv@300  Coll:137
+
+  ★ D4-Equivariant + KL Guide (Proposed)
+    Greedy:  80.0% ± 40.0%
+    +MCTS:   80.0% ± 40.0%
+    수렴 에피소드: 190  충돌: 51
+
+=================================================================
+  학습: Standard CNN + KL Guide
+=================================================================
+
+  [Seed 1/5: 42]
+    Ep   50/300 [WarmUp] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.8305  β: 0.500  Coll: 0
+    Ep  100/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 1.9289  β: 0.500  Coll: 4
+    Ep  150/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: -0.1577  β: 0.500  Coll: 11
+    Ep  200/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.1211  β: 0.500  Coll: 15
+    Ep  250/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: -0.0676  β: 0.500  Coll: 19
+    Ep  300/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.0982  β: 0.500  Coll: 19
+  → Seed 42: Greedy 100.0%  MCTS 100.0%  Conv@50  Coll:19
+
+  [Seed 2/5: 123]
+    Ep   50/300 [WarmUp] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.2955  β: 0.500  Coll: 0
+    Ep  100/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 2.2808  β: 0.500  Coll: 3
+    Ep  150/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.0413  β: 0.500  Coll: 9
+    Ep  200/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.1451  β: 0.500  Coll: 15
+    Ep  250/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 2.2258  β: 0.500  Coll: 21
+    Ep  300/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: -0.0962  β: 0.500  Coll: 21
+  → Seed 123: Greedy 100.0%  MCTS 100.0%  Conv@50  Coll:21
+
+  [Seed 3/5: 456]
+    Ep   50/300 [WarmUp] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.4330  β: 0.500  Coll: 0
+    Ep  100/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 2.2256  β: 0.500  Coll: 4
+    Ep  150/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 1.1154  β: 0.500  Coll: 11
+    Ep  200/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.8835  β: 0.500  Coll: 18
+    Ep  250/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 1.6114  β: 0.500  Coll: 21
+    Ep  300/300 [AC+KL  ] Greedy: -0.0883  β: 0.500  Coll: 22
+  → Seed 456: Greedy 100.0%  MCTS 100.0%  Conv@50  Coll:22
+
+  [Seed 4/5: 789]
+    Ep   50/300 [WarmUp] Greedy: 100.0%  MCTS: 100.0%  Loss: -0.0083  β: 0.500  Coll: 0
+    Ep  100/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 2.5827  β: 0.500  Coll: 2
+    Ep  150/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.0082  β: 0.500  Coll: 9
+    Ep  200/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: -0.3013  β: 0.500  Coll: 14
+    Ep  250/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: -0.2128  β: 0.500  Coll: 16
+    Ep  300/300 [AC+KL  ] Greedy: -0.0941  β: 0.500  Coll: 17
+  → Seed 789: Greedy 100.0%  MCTS 100.0%  Conv@50  Coll:17
+
+  [Seed 5/5: 1024]
+    Ep   50/300 [WarmUp] Greedy:   0.0%  MCTS:   0.0%  Loss: 1.7063  β: 0.500  Coll: 0
+    Ep  100/300 [AC+KL  ] Greedy:   0.0%  MCTS:   0.0%  Loss: 1.3089  β: 0.500  Coll: 13
+    Ep  150/300 [AC+KL  ] Greedy:   0.0%  MCTS:   0.0%  Loss: 0.7759  β: 0.500  Coll: 42
+    Ep  200/300 [AC+KL  ] Greedy:   0.0%  MCTS:   0.0%  Loss: 0.3729  β: 0.500  Coll: 55
+    Ep  250/300 [AC+KL  ] Greedy:   0.0%  MCTS: 100.0%  Loss: 0.3395  β: 0.500  Coll: 69
+    Ep  300/300 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: -0.1430  β: 0.500  Coll: 74
+  → Seed 1024: Greedy 100.0%  MCTS 100.0%  Conv@300  Coll:74
+
+  ★ Standard CNN + KL Guide
+    Greedy:  100.0% ± 0.0%
+    +MCTS:   100.0% ± 0.0%
+    수렴 에피소드: 100  충돌: 31
+
+✅  결과 저장: real_results.json
+✅  그래프 저장: real_results_plots.png
+
+=================================================================
+  총 소요 시간: 29.2분
+=================================================================
+  D4-Equivariant + KL Guide (Proposed)              
+    Greedy : 80.0% ± 40.0%
+    +MCTS  : 80.0% ± 40.0%
+  Standard CNN + KL Guide                           
+    Greedy : 100.0% ± 0.0%
+    +MCTS  : 100.0% ± 0.0%
+=================================================================

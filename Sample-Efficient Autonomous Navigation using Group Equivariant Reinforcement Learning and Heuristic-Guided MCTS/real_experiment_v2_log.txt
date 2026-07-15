@@ -1,0 +1,35 @@
+ Apple Silicon 사용 중 (CPU 강제 사용로 지연 방지)
+
+=================================================================
+Start of the experiment   ─  Train First, Search Later
+ Setting: 5 Seeds x 500 Ep x 2 Model
+ Warm-up: 80 Ep → Actor-Critic+KL: 420 Ep
+ Device: cpu
+=================================================================
+
+=================================================================
+  Learning: D4-Equivariant + KL Guide (Proposed)
+=================================================================
+
+  [Seed 1/5: 42]
+    Ep   50/500 [WarmUp] Greedy:   0.0%  MCTS:   0.0%  Loss: 0.6926  β: 0.500  Coll: 0
+    Ep  100/500 [AC+KL  ] Greedy: 100.0%  MCTS:   0.0%  Loss: 0.7989  β: 0.500  Coll: 5
+    Ep  150/500 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.2270  β: 0.500  Coll: 9
+    Ep  200/500 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.1962  β: 0.500  Coll: 11
+    Ep  250/500 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.5661  β: 0.500  Coll: 14
+    Ep  300/500 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.1387  β: 0.500  Coll: 15
+    Ep  350/500 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.0915  β: 0.500  Coll: 17
+    Ep  400/500 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 1.5978  β: 0.500  Coll: 22
+    Ep  450/500 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: -0.1472  β: 0.500  Coll: 23
+    Ep  500/500 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.5723  β: 0.500  Coll: 26
+  → Seed 42: Greedy 100.0%  MCTS 100.0%  Conv@100  Coll:26
+
+  [Seed 2/5: 123]
+    Ep   50/500 [WarmUp] Greedy:   0.0%  MCTS:   0.0%  Loss: 0.1830  β: 0.500  Coll: 0
+    Ep  100/500 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: -0.3891  β: 0.500  Coll: 2
+    Ep  150/500 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 1.4864  β: 0.500  Coll: 6
+    Ep  200/500 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: 0.9994  β: 0.500  Coll: 9
+    Ep  250/500 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: -0.2247  β: 0.500  Coll: 12
+    Ep  300/500 [AC+KL  ] Greedy: 100.0%  MCTS:   0.0%  Loss: -0.0087  β: 0.500  Coll: 14
+    Ep  350/500 [AC+KL  ] Greedy: 100.0%  MCTS: 100.0%  Loss: -0.0688  β: 0.500  Coll: 15
+    Ep  400/500 [AC+KL  ] Greedy: 100.0%  MCTS:   0.0%  Loss: 0.2027  β: 0.500  Coll: 20
