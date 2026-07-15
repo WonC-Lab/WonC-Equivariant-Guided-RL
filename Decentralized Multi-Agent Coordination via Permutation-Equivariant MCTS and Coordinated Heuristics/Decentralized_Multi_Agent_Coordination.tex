@@ -2,6 +2,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{graphicx}
+\usepackage{float}
 \usepackage{algorithm}
 \usepackage{algorithmic}
 \usepackage{hyperref}
@@ -258,9 +259,7 @@ The ablation study reveals three critical insights:
     \item \textbf{Heuristic prior is indispensable for search quality}: The $\beta$-sensitivity analysis (\S\ref{sec:sensitivity}) shows that without the heuristic prior ($\beta=0$), MCTS-alone collapses to $0\%$ success. This is because the GNN prior, trained under a limited MCTS budget, requires heuristic guidance to maintain goal-directedness within the evaluation budget.
 \end{itemize}
 
-\begin{table}[htbp]
-\caption{Decentralised Coordination Success Rate (\%, mean $\pm$ std over $N=50$ randomised episodes with independently sampled start/goal positions). $^\dagger$MCTS methods use $N_{\rm search}=20$. All methods are evaluated over the identical sample size $N=50$ to ensure statistical uniformity.}
-\label{tab:results}
+\begin{table}[H]
 \begin{center}
 \small
 \begin{tabular}{|l|c|c|c|c|c|c|}
@@ -278,23 +277,25 @@ Baseline: Heuristic Only (Default) & $92{\pm}27$ & $82{\pm}38$ & $76{\pm}43$ & $
 \hline
 \end{tabular}
 \end{center}
+\caption{Decentralised Coordination Success Rate (\%, mean $\pm$ std over $N=50$ randomised episodes with independently sampled start/goal positions). $^\dagger$MCTS methods use $N_{\rm search}=20$. All methods are evaluated over the identical sample size $N=50$ to ensure statistical uniformity.}
+\label{tab:results}
 \end{table}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \includegraphics[width=0.48\textwidth]{results/scalability_test.png}
 \caption{Robustness Test: Success rate of our PE-GNN + MCTS framework across Default, Empty, and Random obstacle layouts under variable cooperative agent counts $M \in \{2, 3, 4, 5, 6, 8\}$.}
 \label{fig:scalability}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \includegraphics[width=0.48\textwidth]{results/mcts_ablation.png}
 \caption{MCTS Search Ablation: Comparative success rate analysis on the Default Map showing the absolute necessity of MCTS online tree search over GNN priors and potential field heuristics.}
 \label{fig:mcts_ablation}
 \end{figure}
 
-\begin{figure*}[htbp]
+\begin{figure*}[H]
 \centering
 \begin{minipage}{0.48\textwidth}
   \centering
@@ -323,9 +324,7 @@ With $N=50$ episodes per MCTS configuration, the 95\% confidence interval width 
 \paragraph{Theorem 4 qualitative consistency.}
 To verify the qualitative scaling behavior of the Equivariant Additive Value Decomposition bound (Theorem~\ref{thm:value_decomp}), we record the average minimum inter-agent distance $\hat{d}_{\min}$ across all timesteps of each evaluation episode. Table~\ref{tab:theorem4} and Figure~\ref{fig:theorem4} summarize the results. We emphasize that the theoretical upper bound $\varepsilon$ (computed with illustrative parameters $C=1, \alpha=2$) is intended as a qualitative scaling guide rather than a tight numerical guarantee. Indeed, at higher agent densities (e.g., $M=8$), the upper bound grows to a loose, numerically vacuous value ($\varepsilon \le 100.07$), which does not tightly constrain the coordination values. However, the crucial observation is the \emph{monotone correlation of scaling trends}: as the agent count $M$ increases and the average inter-agent clearance $\hat{d}_{\min}$ shrinks, the theoretical error upper bound grows monotonically, corresponding directly to a monotonic increase in the observed empirical failure rate ($1 -$ SR) from $6\%$ to $70\%$. This validates the scaling prediction of Theorem~\ref{thm:value_decomp}—namely, that value decomposition error scales as $O(M^2 / d_{\min}^2)$—showing that it serves as a reliable qualitative proxy for decentralized coordination failure.
 
-\begin{table}[htbp]
-\caption{Theorem~4 Consistency Check. Empirically measured mean $\hat{d}_{\min}$ (averaged over episode steps), theoretical bound $\varepsilon$ with $C=1$, $\alpha=2$, $\gamma=0.95$, and observed failure rate (Default Map, PE-GNN+MCTS, $N=50$, $N_{\rm search}=20$).}
-\label{tab:theorem4}
+\begin{table}[H]
 \begin{center}
 \small
 \begin{tabular}{|c|c|c|c|}
@@ -341,9 +340,11 @@ $M$ & $\hat{d}_{\min}$ (cells) & Bound $\varepsilon \leq$ & Failure $1-$SR \\
 \hline
 \end{tabular}
 \end{center}
+\caption{Theorem~4 Consistency Check. Empirically measured mean $\hat{d}_{\min}$ (averaged over episode steps), theoretical bound $\varepsilon$ with $C=1$, $\alpha=2$, $\gamma=0.95$, and observed failure rate (Default Map, PE-GNN+MCTS, $N=50$, $N_{\rm search}=20$).}
+\label{tab:theorem4}
 \end{table}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \includegraphics[width=0.48\textwidth]{results/theorem4_verification.png}
 \caption{Theorem~4 consistency: average $\hat{d}_{\min}$ (left axis), decomposition error bound (right axis), and empirical failure rate $1-$SR (right axis) vs.\ agent count $M$. The monotone co-increase of bound and failure rate validates the $O(M^2/d_{\min}^2)$ scaling predicted by Theorem~\ref{thm:value_decomp}.}
@@ -356,7 +357,7 @@ The Coordinated Heuristic baseline nearly matches PE-GNN+MCTS on the Default Map
 \paragraph{Grid-size zero-shot transfer.}
 To test spatial generalisation beyond the training environment, we evaluate PE-GNN+MCTS on a $20 \times 20$ grid ($M=4$, random obstacles, $N=50$) using the model trained exclusively on $13 \times 13$ maps. The architecture generalises zero-shot because the CNN employs \texttt{AdaptiveAvgPool2d}, producing fixed-size feature vectors regardless of grid dimensions. Empirically, the success rate actually increases from $84\%$ (on the $13\times 13$ trained grid) to $\mathbf{94\%}$ on the $20\times 20$ zero-shot transfer grid. This is because the larger grid size offers more spatial clearance, reducing agent bottlenecks and permitting easier collision avoidance, demonstrating that the equivariant feature extractor scales effectively to larger areas without performance degradation. See Figure~\ref{fig:grid_transfer}.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \includegraphics[width=0.40\textwidth]{results/grid_transfer.png}
 \caption{Zero-shot grid-size transfer ($M=4$, random obstacles, $N=50$): $13{\times}13$ trained model achieves $84\%$; applied zero-shot to $20{\times}20$ it achieves $94\%$. The \texttt{AdaptiveAvgPool2d} architecture enables this without retraining.}
@@ -370,26 +371,26 @@ To characterize the robustness of our framework, we conduct three targeted sensi
 Figure~\ref{fig:nsearch} reports success rate as $N_{\mathrm{search}}$ varies over $\{5, 10, 20, 40, 80\}$ with $\beta=0.3$ fixed. Performance increases monotonically: $68\%$ at $N_{\rm search}=5$, $68\%$ at $N_{\rm search}=10$, $72\%$ at $N_{\rm search}=20$, $72\%$ at $N_{\rm search}=40$, and $76\%$ at $N_{\rm search}=80$. The empirical result shows a clean saturation curve: additional search budget consistently improves coordination success before plateauing beyond $N=40$.
 
 \paragraph{Heuristic Mixing Weight $\beta$.}
-Figure~\ref{fig:betasens} sweeps $\beta \in \{0.0, 0.1, 0.3, 0.5, 1.0\}$ with $N_{\mathrm{search}}=40$ fixed. The result is a sharp binary threshold: at $\beta \in \{0.0, 0.1\}$ (near-pure GNN prior), success collapses to $\le 2\%$; at $\beta \ge 0.3$ it jumps to $72$--$74\%$; at $\beta=1.0$ (pure heuristic prior) it is $66\%$. This bimodal behaviour confirms that the heuristic prior is indispensable for search quality: the GNN prior alone, trained under limited MCTS budget, fails to maintain goal-directedness, causing deadlocks.
+Figure~\ref{fig:betasens} sweeps $\beta \in \{0.0, 0.1, 0.3, 0.5, 1.0\}$ with $N_{\mathrm{search}}=40$ fixed. The result is a sharp bimodal threshold: at $\beta \in \{0.0, 0.1\}$ (near-pure GNN prior), success collapses to $\le 2\%$; at $\beta \ge 0.3$ it jumps to $72$--$74\%$; at $\beta=1.0$ (pure heuristic prior) it is $66\%$. This bimodal behaviour confirms that the heuristic prior is indispensable for search quality: the GNN prior alone, trained under limited MCTS budget, fails to maintain goal-directedness, causing deadlocks.
 
 \paragraph{Communication Radius $R_c$.}
 Figure~\ref{fig:rcsens} tests $R_c \in \{3, 6, \infty\}$ cells on the larger $25{\times}25$ grid with random obstacles ($M=4$, $N=50$). All three communication radii achieve an identical $\mathbf{94\%}$ success rate. This null result is scientifically significant: it indicates that even in larger, unseen spatial layouts, multi-agent coordination and collision avoidance are inherently local behaviors. Masking out agents further than 3 cells away does not affect path selection or navigation quality because agents only need to coordinate when they enter immediate proximity. This empirically validates that local-only communication is sufficient for decentralized MCTS navigation, making the framework highly scalable for large-area deployments where global broadcast is unavailable.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \includegraphics[width=0.40\textwidth]{results/rc_sensitivity.png}
 \caption{Communication radius sensitivity ($M=4$, Random Obs on $25{\times}25$ grid, $N=50$): limiting the communication range to $R_c = 3$ cells does not degrade success rate ($94\%$), showing local coordination is sufficient.}
 \label{fig:rcsens}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \includegraphics[width=0.48\textwidth]{results/nsearch_sensitivity.png}
 \caption{Effect of MCTS search budget $N_{\mathrm{search}}$ on coordination success ($M=4$, Default Map, $\beta=0.3$, $N=50$). Monotone improvement: $68\%$ at $N_{\rm search}=5$ to $76\%$ at $N_{\rm search}=80$. Shaded region shows $\pm1$ std.}
 \label{fig:nsearch}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \includegraphics[width=0.48\textwidth]{results/beta_sensitivity.png}
 \caption{Sensitivity to heuristic mixing weight $\beta$ ($M=4$, $N_{\rm search}=40$, $N=50$). Sharp threshold at $\beta=0.3$: below this the GNN prior fails to maintain goal-directedness and success collapses to $\le 2\%$.}
@@ -537,9 +538,7 @@ The bound is tight up to constants in the limit $d_{\min}(s) \to 0$ (crowded sta
 \subsection{Numerical Verification of Permutation Equivariance}\label{app:numerical_equiv}
 To confirm Theorem~\ref{thm:perm_equiv} holds in practice, we numerically evaluated the maximum absolute difference between $f_\theta(P_\sigma Z)$ and $P_\sigma f_\theta(Z)$ over 50 random permutations $\sigma \in S_4$ applied to random input matrices $Z \in \mathbb{R}^{4 \times 128}$. The results are summarized in Table~\ref{tab:equiv_check}.
 
-\begin{table}[h]
-\caption{Numerical Equivariance Verification ($M=4$, 50 random permutations)}
-\label{tab:equiv_check}
+\begin{table}[H]
 \centering
 \small
 \begin{tabular}{|l|c|}
@@ -550,6 +549,8 @@ Max absolute difference $\|f_\theta(P_\sigma Z) - P_\sigma f_\theta(Z)\|_\infty$
 Mean absolute difference & $4.20 \times 10^{-7}$ \\
 \hline
 \end{tabular}
+\caption{Numerical Equivariance Verification ($M=4$, 50 random permutations)}
+\label{tab:equiv_check}
 \end{table}
 Differences on the order of $10^{-7}$ are attributable solely to IEEE 754 floating-point rounding and confirm that the implementation satisfies equivariance to machine precision.
 

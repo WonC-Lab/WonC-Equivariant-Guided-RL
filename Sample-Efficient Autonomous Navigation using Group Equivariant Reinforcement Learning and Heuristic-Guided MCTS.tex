@@ -11,6 +11,7 @@
 \usepackage{algorithm}
 \usepackage{algorithmic}
 \usepackage{graphicx}
+\usepackage{float}
 \usepackage{geometry}
 \usepackage{xcolor}
 \usepackage{thmtools}
@@ -423,7 +424,7 @@ We evaluated our proposed framework in a procedural grid navigation environment 
 \subsection{Ablation Study on Unseen Maps}
 To determine the contribution of each framework module ($D_4$ Equivariance, MCTS search, and Heuristic-Guided Loss), we evaluated several configurations. As shown in Fig.~\ref{fig:ablation_unseen}, the full proposed framework (D4-Net + MCTS + Guidance) achieves the most stable and sample-efficient learning curve on 20 unseen validation maps. Removing $D_4$ equivariance results in slower convergence (consistent with the sample complexity bounds), while removing heuristic guidance ($\beta_{\mathrm{start}}=0.0$) leads to significantly higher variance and performance drops in early training phases. We note that the model-free Equivariant DQN (Mondal et al. 2020) baseline, lacking MCTS lookahead planning, exhibits a much slower model-free training trajectory that converges at approximately 240 episodes, and is thus omitted from the ablation learning curves in Fig.~\ref{fig:ablation_unseen} to focus on the modular contributions of search-guided architectures within early epochs (up to 300 episodes).
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{ablation_study_unseen.png}
 \caption{Ablation Study: Success rate on 20 unseen random layouts across training episodes.}
@@ -433,7 +434,7 @@ To determine the contribution of each framework module ($D_4$ Equivariance, MCTS
 \subsection{Zero-Shot Generalization on Unseen Layouts}
 We evaluated the trained $D_4$-Net, the Standard CNN with 8$\times$ data augmentation, and the Standard CNN baseline on all 8 elements of the Dihedral group $D_4$ across 30 unseen layouts. As illustrated in Fig.~\ref{fig:gen_test_unseen}, the $D_4$-Net maintains a 100.0\% relative success rate consistency across all symmetric rotations and reflections, directly validating Theorem~\ref{thm:softmax_equiv}. We clarify that Equivariant DQN (Mondal et al. 2020), which also utilizes an equivariant CNN backbone, exhibits the same $100\%$ zero-shot generalization profile as our method (and is therefore omitted from Fig.~\ref{fig:gen_test_unseen} for visual clarity). In contrast, the Standard CNN without augmentation fails on non-identity elements, and even the 8$\times$ augmented Standard CNN exhibits significant performance drops on unseen configurations, confirming that mathematical equivariance cannot be fully learned via data augmentation alone.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{generalization_test_unseen.png}
 \caption{Zero-Shot Generalization Success Rate (\%) on 30 unseen random layouts under all 8 $D_4$ transformations.}
@@ -450,10 +451,8 @@ We evaluate our method against three baseline configurations:
 
 While standard model-free algorithms (e.g., standard PPO or SAC) are popular choices, they lack lookahead search capabilities and require hundreds of thousands of interaction steps to learn basic navigation policies due to the sparse reward signal and high-variance gradients. In this paper, we focus our empirical baseline comparisons on architectures with heuristic guidance and data augmentation to isolate the contribution of representation-level equivariance. This isolation ensures we validate the direct impact of geometric constraint mapping on sample efficiency and safety, as model-free baselines without search naturally perform significantly worse in sparse-reward environments.
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
-\caption{Quantitative Performance and Convergence Comparison on Unseen Maps ($13 \times 13$ Grid, 5 Seeds)}
-\label{tab:results}
 \vskip 0.1in
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lcccc}
@@ -469,16 +468,16 @@ Equivariant DQN (Mondal et al. 2020) & 72.8 $\pm$ 8.2 & N/A & 240 & 228.4 \\
 \bottomrule
 \end{tabular}%
 }
+\caption{Quantitative Performance and Convergence Comparison on Unseen Maps ($13 \times 13$ Grid, 5 Seeds)}
+\label{tab:results}
 \end{table}
 
 The $D_4$-Net converges in 200 episodes compared to 240 for Equivariant DQN (Mondal et al. 2020), 270 for the Standard CNN + KL Guide, and 280 for the Standard CNN + 8x Augment on the $13 \times 13$ grid, empirically confirming the sample complexity compression predicted by Theorem~\ref{thm:sample_complexity}. Notably, while the model-free Equivariant DQN (Mondal et al. 2020) baseline benefits from $D_4$-equivariance to outperform standard CNNs in convergence speed and success rate, it lacks lookahead tree search and safety-guiding regularizations. This leads to a high collision rate of 228.4 during training. In contrast, our proposed method converges faster (200 episodes), achieves a much higher greedy success rate ($87.6\%$), and reduces average collisions to 141.4 (a 38\% reduction compared to Equivariant DQN), validating the safety bounds of Theorem~\ref{thm:kl_safety} and demonstrating that combining representation-level symmetry with search lookahead is essential for safe and sample-efficient navigation. Crucially, our heuristic guidance reduces the average number of training collisions from 176.4 (Standard CNN with 8x Augment) to 141.4, confirming the safety guarantees in dynamic training regimes.
 
 To verify the framework's scalability to high-dimensional state spaces, we extended the evaluation to a larger $21 \times 21$ grid map navigation task. Table~\ref{tab:results_21} summarizes the quantitative metrics.
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
-\caption{Quantitative Performance and Convergence Comparison on Unseen Maps ($21 \times 21$ Grid, 5 Seeds)}
-\label{tab:results_21}
 \vskip 0.1in
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lcccc}
@@ -494,17 +493,16 @@ Equivariant DQN (Mondal et al. 2020) & 61.4 $\pm$ 10.2 & N/A & 260 & 285.6 \\
 \bottomrule
 \end{tabular}%
 }
+\caption{Quantitative Performance and Convergence Comparison on Unseen Maps ($21 \times 21$ Grid, 5 Seeds)}
+\label{tab:results_21}
 \end{table}
 
 As the grid dimension scales from $13 \times 13$ to $21 \times 21$, the enlarged state-action spaces naturally degrade greedy success rates and increase collision occurrences. Nevertheless, our $D_4$-equivariant model maintains a strong performance margin over standard baselines, securing an $82.4\% \pm 8.8\%$ Greedy success rate and $95.8\% \pm 4.2\%$ MCTS success rate. The convergence speed is also optimized (220 episodes for Ours vs. 260 for Equivariant DQN and 285--295 for CNN baselines), demonstrating that representation-level symmetry priors scale robustly to larger dimensional settings.
 
 To push the scalability limits of our framework, we further scaled the grid size to a massive $51 \times 51$ grid environment. As shown in Table~\ref{tab:results_51}, standard model-free PPO and SAC baselines fail to solve this larger navigation task, achieving less than $13\%$ success rates and suffering from excessive training collisions (>900) due to the extreme sparsity of target rewards over the larger space. While non-equivariant CNN baselines with MCTS guidance reach around $72\%$--$74\%$ MCTS success, they require over 620 episodes to converge. In contrast, our $D_4$-equivariant framework leverages localized receptive field GFA representations and MCTS lookahead to converge in only 410 episodes, maintaining a high Greedy success rate of $68.4\% \pm 11.2\%$ and an MCTS success rate of $88.6\% \pm 6.8\%$. Training collisions are also reduced by up to $43\%$ compared to standard CNNs, confirming that localized equivariant representations scale effectively to larger workspaces.
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
-\caption{Quantitative Performance and Convergence Comparison on Unseen Maps ($51 \times 51$ Grid, 5 Seeds)}
-\label{tab:results_51}
-\vskip 0.1in
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lcccc}
 \toprule
@@ -519,12 +517,14 @@ Equivariant DQN (Mondal et al. 2020) & 42.6 $\pm$ 13.8 & N/A & 540 & 580.4 \\
 \bottomrule
 \end{tabular}%
 }
+\caption{Quantitative Performance and Convergence Comparison on Unseen Maps ($51 \times 51$ Grid, 5 Seeds)}
+\label{tab:results_51}
 \end{table}
 
 \subsection{Robustness to Obstacle Density and Grid Sizing}
 We evaluated the robustness of the trained models against varying obstacle densities: Low (8 obstacles), Medium (12 obstacles), and High (16 obstacles) on 30 maps. As shown in Fig.~\ref{fig:density_robustness}, our $D_4$-equivariant model maintains a consistent success rate margin over non-equivariant baselines across all density levels.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{density_robustness.png}
 \caption{Robustness to Obstacle Density: Greedy success rate comparison across Low (8), Medium (12), and High (16) obstacle densities on unseen layouts.}
@@ -538,7 +538,7 @@ Fig.~\ref{fig:sensitivity} shows that increasing MCTS simulations $N_{\mathrm{se
 
 Specifically, when $N_{\mathrm{search}} = 5$, we observe a transient performance drop where success rate collapses near 0\% around episode 100 before recovering. This instability arises from the interaction between a shallow search depth and the high-weight heuristic regularization ($\beta_t$) in early epochs. When the MCTS budget is small, the search tree is too shallow to find successful paths through obstacles. Consequently, the search value $Q(s, a)$ is highly dependent on the GNN value estimator $V_\theta$, which is noisy and biased in early training. Meanwhile, the strong heuristic regularization prior forces the agent away from obstacles. This conflict creates local limit cycles and oscillatory loops (causing the success rate to collapse). As training continues, the GNN value head becomes more accurate and the scheduler decays the heuristic coefficient ($\beta_t \to \beta_{\min}$), which breaks the local feedback loop, allowing the model to recover and converge to 100\% success.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{mcts_sensitivity.png}
 \caption{Sensitivity of MCTS simulation count on convergence and training speed.}
