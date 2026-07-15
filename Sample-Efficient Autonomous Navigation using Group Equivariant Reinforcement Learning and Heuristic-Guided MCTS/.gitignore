@@ -1,0 +1,23 @@
+# Exclude LaTeX paper source files
+*.tex
+*.pdf
+*.aux
+*.log
+*.toc
+*.out
+*.synctex.gz
+
+# Python cache & temporary files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# OS temporary files
+.DS_Store
+.DS_Store?
+._*
+
+# Editor configurations
+.vscode/
+.idea/
