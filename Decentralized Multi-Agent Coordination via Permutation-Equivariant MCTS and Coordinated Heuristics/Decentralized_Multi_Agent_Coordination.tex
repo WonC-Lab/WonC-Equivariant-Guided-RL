@@ -1,6 +1,7 @@
 \documentclass[11pt,a4paper]{article}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{amsthm}
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{algorithm}
@@ -34,6 +35,7 @@ Decentralized Multi-Agent Coordination via Permutation-Equivariant MCTS and Coor
 \pagestyle{empty}
 
 %===============================================================================
+\begin{abstract}
 Decentralized Multi-Agent Reinforcement Learning (MARL) in dense grids is severely bottlenecked by the exponential scaling of joint action spaces and the dependency of communication policies on agent indexing order. In this paper, we present a novel framework that integrates Permutation-Equivariant Graph Neural Networks (PE-GNN) with decentralized Actor-Critic Monte Carlo Tree Search (MCTS) and coordinated potential field heuristics. By omitting positional agent encodings, our PE-GNN guarantees policy-value equivariance under the symmetric group $S_M$ of agent permutations, allowing zero-shot scalability to unseen agent counts. To overcome the cold-start problem in multi-agent environments, we utilize localized reciprocal collision avoidance heuristics as a decaying KL-regularizer in the loss function, which is further integrated directly into MCTS search rollouts as an action prior. As our primary theoretical contribution, we prove an \emph{Equivariant Additive Value Decomposition} theorem (Theorem~4), establishing that permutation-equivariant value estimates admit a decomposition error bounded by $C\binom{M}{2}/((1-\gamma)d_{\min}^\alpha)$, where $d_{\min}$ is the minimum inter-agent distance. This result provides the first equivariance-grounded justification for additive value decomposition, explaining the observed scalability cliff at high agent densities. Empirical evaluations in cluttered grid environments with a uniform $N=50$ episodes per configuration demonstrate up to $94\%$ coordination success on the trained map layout, with robust zero-shot generalisation to unseen obstacle layouts and scaled agent counts.
 \end{abstract}
 
