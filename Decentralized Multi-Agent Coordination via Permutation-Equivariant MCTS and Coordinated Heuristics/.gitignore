@@ -1,6 +1,4 @@
-# Exclude LaTeX paper source files
-*.tex
-
+# Python cache
 # Python cache
 __pycache__/
 *.pyc

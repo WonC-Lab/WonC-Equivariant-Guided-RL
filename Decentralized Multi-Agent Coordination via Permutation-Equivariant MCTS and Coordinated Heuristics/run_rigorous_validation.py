@@ -40,11 +40,11 @@ from multi_agent_mcts import MultiAgentMCTS
 #   - NUM_MCTS_EPISODES=20 x 6 M-values x 5 methods => ~30-40 min total
 # Increase NUM_MCTS_EPISODES for publication; keep low for quick iteration.
 # -------------------------------------------------------------------------
-NUM_MCTS_EPISODES   = 20    # Episodes per condition for MCTS-based modes
-NUM_FAST_EPISODES   = 50    # Episodes per condition for non-MCTS modes (fast)
+NUM_MCTS_EPISODES   = 50    # Episodes per condition for MCTS-based modes (N=50)
+NUM_FAST_EPISODES   = 50    # Episodes per condition for non-MCTS modes (N=50)
 FAST_MODE           = False  # Set True to skip slow sensitivity sweeps
 AGENT_COUNTS        = [2, 3, 4, 5, 6, 8]
-MCTS_SEARCHES_EVAL  = 20    # Reduced from 40 for speed; raise for camera-ready
+MCTS_SEARCHES_EVAL  = 20    # MCTS search budget
 HEURISTIC_BETA      = 0.3   # Heuristic mixing weight in MCTS during eval
 GAMMA               = 0.95
 
@@ -472,8 +472,8 @@ def run_rc_sensitivity(model):
 
     for rc, label in zip(rc_values, rc_labels):
         res = evaluate_performance(
-            model, num_agents=4, obstacle_mode="default",
-            num_episodes=NUM_MCTS_EPISODES, mode="mcts", rc=rc)
+            model, num_agents=4, obstacle_mode="random",
+            num_episodes=NUM_MCTS_EPISODES, mode="mcts", rc=rc, grid_size=25)
         rc_results.append(res)
         sr  = res["success_rate"] * 100
         std = res["std"] * 100
@@ -833,6 +833,9 @@ def run_rigorous_validation():
     plot_grid_transfer(grid_results)
 
     # -- Experiment 6: Hyperparameter Sensitivity (optional, slow) -----------
+    sens_data = run_sensitivity_experiments(model)
+    plot_sensitivity(sens_data)
+
     all_results = {
         "config": {
             "num_mcts_episodes": NUM_MCTS_EPISODES,

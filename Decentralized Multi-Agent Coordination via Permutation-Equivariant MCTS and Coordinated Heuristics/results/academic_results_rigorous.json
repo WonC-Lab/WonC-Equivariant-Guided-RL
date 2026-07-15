@@ -1,207 +1,365 @@
 {
-    "agent_counts": [
-        2,
-        3,
-        4,
-        5,
-        6,
-        8
-    ],
-    "robustness": {
-        "default": {
-            "rates": [
-                0.95,
-                0.75,
-                0.8,
-                0.75,
-                0.5,
-                0.4
-            ],
-            "steps": [
-                40,
-                60,
-                80,
-                100,
-                120,
-                160
-            ],
-            "stds": [
-                0.21794494717703372,
-                0.4330127018922193,
-                0.4,
-                0.4330127018922193,
-                0.5,
-                0.48989794855663565
-            ]
-        },
-        "empty": {
-            "rates": [
-                1.0,
-                1.0,
-                0.75,
-                0.8,
-                0.8,
-                0.6
-            ],
-            "steps": [
-                40,
-                60,
-                80,
-                100,
-                120,
-                160
-            ],
-            "stds": [
-                0.0,
-                0.0,
-                0.4330127018922193,
-                0.4,
-                0.4,
-                0.48989794855663565
-            ]
-        },
-        "random": {
-            "rates": [
-                1.0,
-                1.0,
-                0.85,
-                1.0,
-                0.75,
-                0.5
-            ],
-            "steps": [
-                40,
-                60,
-                80,
-                100,
-                120,
-                160
-            ],
-            "stds": [
-                0.0,
-                0.0,
-                0.3570714214271425,
-                0.0,
-                0.4330127018922193,
-                0.5
-            ]
-        }
-    },
-    "baselines": {
-        "gnn": {
-            "rates": [
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0
-            ],
-            "steps": [
-                40,
-                60,
-                80,
-                100,
-                120,
-                160
-            ],
-            "stds": [
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0
-            ]
-        },
-        "heuristic": {
-            "rates": [
-                1.0,
-                0.8,
-                0.75,
-                0.75,
-                0.5,
-                0.4
-            ],
-            "steps": [
-                40,
-                60,
-                80,
-                100,
-                120,
-                160
-            ],
-            "stds": [
-                0.0,
-                0.4,
-                0.4330127018922193,
-                0.4330127018922193,
-                0.5,
-                0.48989794855663565
-            ]
-        }
-    },
-    "density": {
-        "obstacle_counts": [
+    "config": {
+        "num_mcts_episodes": 50,
+        "num_fast_episodes": 50,
+        "agent_counts": [
+            2,
+            3,
+            4,
+            5,
             6,
-            12,
-            18
+            8
         ],
-        "rates": [
-            0.9,
-            0.85,
-            0.85
+        "mcts_searches": 20,
+        "beta": 0.3,
+        "theorem4_C": 1.0,
+        "theorem4_alpha": 2.0
+    },
+    "comparison": {
+        "mcts": [
+            {
+                "success_rate": 0.94,
+                "std": 0.237,
+                "avg_d_min": 5.401,
+                "theorem4_bound": 0.6856
+            },
+            {
+                "success_rate": 0.8,
+                "std": 0.4,
+                "avg_d_min": 3.946,
+                "theorem4_bound": 3.8536
+            },
+            {
+                "success_rate": 0.82,
+                "std": 0.384,
+                "avg_d_min": 3.537,
+                "theorem4_bound": 9.5896
+            },
+            {
+                "success_rate": 0.68,
+                "std": 0.466,
+                "avg_d_min": 2.939,
+                "theorem4_bound": 23.1563
+            },
+            {
+                "success_rate": 0.58,
+                "std": 0.494,
+                "avg_d_min": 2.657,
+                "theorem4_bound": 42.4837
+            },
+            {
+                "success_rate": 0.3,
+                "std": 0.458,
+                "avg_d_min": 2.366,
+                "theorem4_bound": 100.0717
+            }
         ],
-        "steps": [
-            80,
-            80,
-            80
+        "orca": [
+            {
+                "success_rate": 0.94,
+                "std": 0.237,
+                "avg_d_min": 5.53,
+                "theorem4_bound": 0.653
+            },
+            {
+                "success_rate": 0.88,
+                "std": 0.325,
+                "avg_d_min": 4.32,
+                "theorem4_bound": 3.208
+            },
+            {
+                "success_rate": 0.84,
+                "std": 0.367,
+                "avg_d_min": 3.71,
+                "theorem4_bound": 8.698
+            },
+            {
+                "success_rate": 0.64,
+                "std": 0.48,
+                "avg_d_min": 3.3,
+                "theorem4_bound": 18.395
+            },
+            {
+                "success_rate": 0.38,
+                "std": 0.485,
+                "avg_d_min": 3.14,
+                "theorem4_bound": 30.393
+            },
+            {
+                "success_rate": 0.42,
+                "std": 0.494,
+                "avg_d_min": 2.77,
+                "theorem4_bound": 72.866
+            }
+        ],
+        "gnn_lookahead": [
+            {
+                "success_rate": 0.0,
+                "std": 0.0,
+                "avg_d_min": 6.37,
+                "theorem4_bound": 0.493
+            },
+            {
+                "success_rate": 0.0,
+                "std": 0.0,
+                "avg_d_min": 4.73,
+                "theorem4_bound": 2.677
+            },
+            {
+                "success_rate": 0.0,
+                "std": 0.0,
+                "avg_d_min": 4.36,
+                "theorem4_bound": 6.32
+            },
+            {
+                "success_rate": 0.0,
+                "std": 0.0,
+                "avg_d_min": 4.14,
+                "theorem4_bound": 11.691
+            },
+            {
+                "success_rate": 0.0,
+                "std": 0.0,
+                "avg_d_min": 3.85,
+                "theorem4_bound": 20.287
+            },
+            {
+                "success_rate": 0.0,
+                "std": 0.0,
+                "avg_d_min": 2.45,
+                "theorem4_bound": 93.224
+            }
+        ],
+        "gnn": [
+            {
+                "success_rate": 0.0,
+                "std": 0.0,
+                "avg_d_min": 5.41,
+                "theorem4_bound": 0.684
+            },
+            {
+                "success_rate": 0.0,
+                "std": 0.0,
+                "avg_d_min": 4.34,
+                "theorem4_bound": 3.185
+            },
+            {
+                "success_rate": 0.0,
+                "std": 0.0,
+                "avg_d_min": 3.71,
+                "theorem4_bound": 8.704
+            },
+            {
+                "success_rate": 0.0,
+                "std": 0.0,
+                "avg_d_min": 1.64,
+                "theorem4_bound": 74.549
+            },
+            {
+                "success_rate": 0.0,
+                "std": 0.0,
+                "avg_d_min": 1.47,
+                "theorem4_bound": 139.427
+            },
+            {
+                "success_rate": 0.0,
+                "std": 0.0,
+                "avg_d_min": 1.02,
+                "theorem4_bound": 541.029
+            }
+        ],
+        "heuristic": [
+            {
+                "success_rate": 0.92,
+                "std": 0.271,
+                "avg_d_min": 5.41,
+                "theorem4_bound": 0.684
+            },
+            {
+                "success_rate": 0.82,
+                "std": 0.384,
+                "avg_d_min": 3.91,
+                "theorem4_bound": 3.924
+            },
+            {
+                "success_rate": 0.76,
+                "std": 0.427,
+                "avg_d_min": 3.46,
+                "theorem4_bound": 10.039
+            },
+            {
+                "success_rate": 0.62,
+                "std": 0.485,
+                "avg_d_min": 2.86,
+                "theorem4_bound": 24.456
+            },
+            {
+                "success_rate": 0.42,
+                "std": 0.494,
+                "avg_d_min": 2.58,
+                "theorem4_bound": 45.107
+            },
+            {
+                "success_rate": 0.38,
+                "std": 0.485,
+                "avg_d_min": 2.42,
+                "theorem4_bound": 95.5
+            }
         ]
     },
+    "robustness": {
+        "default": [
+            {
+                "success_rate": 0.94,
+                "std": 0.237
+            },
+            {
+                "success_rate": 0.8,
+                "std": 0.4
+            },
+            {
+                "success_rate": 0.82,
+                "std": 0.384
+            },
+            {
+                "success_rate": 0.68,
+                "std": 0.466
+            },
+            {
+                "success_rate": 0.58,
+                "std": 0.494
+            },
+            {
+                "success_rate": 0.3,
+                "std": 0.458
+            }
+        ],
+        "empty": [
+            {
+                "success_rate": 1.0,
+                "std": 0.0
+            },
+            {
+                "success_rate": 0.96,
+                "std": 0.196
+            },
+            {
+                "success_rate": 0.9,
+                "std": 0.3
+            },
+            {
+                "success_rate": 0.72,
+                "std": 0.449
+            },
+            {
+                "success_rate": 0.74,
+                "std": 0.439
+            },
+            {
+                "success_rate": 0.66,
+                "std": 0.474
+            }
+        ],
+        "random": [
+            {
+                "success_rate": 0.98,
+                "std": 0.14
+            },
+            {
+                "success_rate": 0.92,
+                "std": 0.271
+            },
+            {
+                "success_rate": 0.84,
+                "std": 0.367
+            },
+            {
+                "success_rate": 0.8,
+                "std": 0.4
+            },
+            {
+                "success_rate": 0.8,
+                "std": 0.4
+            },
+            {
+                "success_rate": 0.56,
+                "std": 0.496
+            }
+        ]
+    },
+    "theorem4": [
+        {
+            "M": 2,
+            "avg_d_min": 5.401,
+            "bound": 0.6856,
+            "success_rate": 0.94,
+            "failure": 0.06
+        },
+        {
+            "M": 3,
+            "avg_d_min": 3.946,
+            "bound": 3.8536,
+            "success_rate": 0.8,
+            "failure": 0.2
+        },
+        {
+            "M": 4,
+            "avg_d_min": 3.537,
+            "bound": 9.5896,
+            "success_rate": 0.82,
+            "failure": 0.18
+        },
+        {
+            "M": 5,
+            "avg_d_min": 2.939,
+            "bound": 23.1563,
+            "success_rate": 0.68,
+            "failure": 0.32
+        },
+        {
+            "M": 6,
+            "avg_d_min": 2.657,
+            "bound": 42.4837,
+            "success_rate": 0.58,
+            "failure": 0.42
+        },
+        {
+            "M": 8,
+            "avg_d_min": 2.366,
+            "bound": 100.0717,
+            "success_rate": 0.3,
+            "failure": 0.7
+        }
+    ],
     "rc_sensitivity": {
         "rc_values": [
             "3",
             "6",
             "None"
         ],
-        "rc_labels": [
-            "Rc = 3 cells",
-            "Rc = 6 cells",
-            "Rc = ? (full)"
-        ],
         "results": [
             {
-                "success_rate": 0.9,
-                "std": 0.30000000000000004,
-                "avg_d_min": 3.466612816744347,
-                "theorem4_bound": 9.985517320873834
+                "success_rate": 0.94,
+                "std": 0.237
             },
             {
-                "success_rate": 0.9,
-                "std": 0.30000000000000004,
-                "avg_d_min": 3.451779225353276,
-                "theorem4_bound": 10.071524762272421
+                "success_rate": 0.94,
+                "std": 0.237
             },
             {
-                "success_rate": 0.9,
-                "std": 0.30000000000000004,
-                "avg_d_min": 3.441637894469932,
-                "theorem4_bound": 10.130966895421437
+                "success_rate": 0.94,
+                "std": 0.237
             }
         ]
     },
     "grid_transfer": {
         "13": {
-            "success_rate": 0.9,
-            "std": 0.30000000000000004,
-            "avg_d_min": 3.457182956373012,
-            "theorem4_bound": 10.040064884077115
+            "success_rate": 0.84,
+            "std": 0.367
         },
         "20": {
-            "success_rate": 0.85,
-            "std": 0.3570714214271425,
-            "avg_d_min": 4.592898768514853,
-            "theorem4_bound": 5.6886275395992945
+            "success_rate": 0.94,
+            "std": 0.237
         }
     },
     "sensitivity": {
@@ -215,34 +373,34 @@
             ],
             "results": [
                 {
-                    "success_rate": 0.85,
-                    "std": 0.3570714214271425,
-                    "avg_d_min": 3.455372862213943,
-                    "theorem4_bound": 10.050586598291352
+                    "success_rate": 0.68,
+                    "std": 0.46647615158762407,
+                    "avg_d_min": 3.3538025248067966,
+                    "theorem4_bound": 10.668571480454903
                 },
                 {
-                    "success_rate": 0.85,
-                    "std": 0.3570714214271425,
-                    "avg_d_min": 3.4485053783419373,
-                    "theorem4_bound": 10.090656692745148
+                    "success_rate": 0.68,
+                    "std": 0.46647615158762407,
+                    "avg_d_min": 3.3538025248067966,
+                    "theorem4_bound": 10.668571480454903
                 },
                 {
-                    "success_rate": 0.9,
-                    "std": 0.30000000000000004,
-                    "avg_d_min": 3.441637894469932,
-                    "theorem4_bound": 10.130966895421437
+                    "success_rate": 0.72,
+                    "std": 0.44899888641287294,
+                    "avg_d_min": 3.377072260317569,
+                    "theorem4_bound": 10.52205431003065
                 },
                 {
-                    "success_rate": 0.95,
-                    "std": 0.21794494717703372,
-                    "avg_d_min": 3.424975201000334,
-                    "theorem4_bound": 10.229782109563303
+                    "success_rate": 0.72,
+                    "std": 0.44899888641287294,
+                    "avg_d_min": 3.360793051354965,
+                    "theorem4_bound": 10.624235891751338
                 },
                 {
-                    "success_rate": 1.0,
-                    "std": 0.0,
-                    "avg_d_min": 3.387888313876593,
-                    "theorem4_bound": 10.454976871723364
+                    "success_rate": 0.76,
+                    "std": 0.42708313008125254,
+                    "avg_d_min": 3.3166892500097163,
+                    "theorem4_bound": 10.908666878171744
                 }
             ]
         },
@@ -258,32 +416,32 @@
                 {
                     "success_rate": 0.0,
                     "std": 0.0,
-                    "avg_d_min": 2.4631779555211604,
-                    "theorem4_bound": 19.778332229979924
+                    "avg_d_min": 2.833102407362547,
+                    "theorem4_bound": 14.95053382170222
                 },
                 {
-                    "success_rate": 0.0,
-                    "std": 0.0,
-                    "avg_d_min": 4.421659405355539,
-                    "theorem4_bound": 6.137770892173071
+                    "success_rate": 0.02,
+                    "std": 0.13999999999999999,
+                    "avg_d_min": 4.166629882052354,
+                    "theorem4_bound": 6.912122044138139
                 },
                 {
-                    "success_rate": 0.9,
-                    "std": 0.30000000000000004,
-                    "avg_d_min": 3.441637894469932,
-                    "theorem4_bound": 10.130966895421437
+                    "success_rate": 0.72,
+                    "std": 0.44899888641287294,
+                    "avg_d_min": 3.377072260317569,
+                    "theorem4_bound": 10.52205431003065
                 },
                 {
-                    "success_rate": 0.9,
-                    "std": 0.30000000000000004,
-                    "avg_d_min": 3.3624014984714945,
-                    "theorem4_bound": 10.614073848736314
+                    "success_rate": 0.74,
+                    "std": 0.4386342439892262,
+                    "avg_d_min": 3.3497888769900204,
+                    "theorem4_bound": 10.694152520429006
                 },
                 {
-                    "success_rate": 0.85,
-                    "std": 0.3570714214271425,
-                    "avg_d_min": 3.4165809696113847,
-                    "theorem4_bound": 10.280111165246385
+                    "success_rate": 0.66,
+                    "std": 0.4737087712930805,
+                    "avg_d_min": 3.3301823068569094,
+                    "theorem4_bound": 10.820447640973157
                 }
             ]
         }
