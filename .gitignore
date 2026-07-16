@@ -11,3 +11,6 @@ __pycache__/
 
 # Editor / Tools configurations
 .vscode/
+
+# LaTeX source files (do not commit paper drafts)
+*.tex
