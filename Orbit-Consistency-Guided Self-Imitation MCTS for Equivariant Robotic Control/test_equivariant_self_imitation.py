@@ -163,5 +163,15 @@ class TestEquivariantSelfImitation(unittest.TestCase):
         for v in var_3d:
             self.assertGreaterEqual(v.item(), 0.0)
 
+    def test_multi_grid_proxy_validation_metrics(self):
+        """Test multi-grid toy validation outputs bounded variance in [0,1] and positive correlation metrics."""
+        from run_ablation_comparison import run_toy_proxy_validation
+        tot_r, tot_rho, tot_p, (ci_lo, ci_hi) = run_toy_proxy_validation()
+        self.assertGreater(tot_r, 0.0)
+        self.assertGreater(tot_rho, 0.0)
+        self.assertLess(tot_p, 0.05)
+        self.assertTrue(ci_lo <= tot_r <= ci_hi)
+
 if __name__ == '__main__':
     unittest.main()
+
