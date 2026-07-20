@@ -33,7 +33,7 @@ def compute_ci_pearson(r, n, confidence=0.95):
     return (np.tanh(z_lo), np.tanh(z_hi))
 
 def run_toy_proxy_validation():
-    print("\n=== Running Lemma 5.3 Multi-Grid Toy Proxy Validation ===")
+    print("\n=== Running Lemma 5.6 Multi-Grid Toy Proxy Validation ===")
     set_seed(42)
     
     grid_sizes = [5, 9, 13]
@@ -170,49 +170,45 @@ def run_toy_proxy_validation():
     
     return tot_r, tot_rho, tot_p, (tot_ci_lo, tot_ci_hi)
 
-def run_2d_ablation_benchmarks(num_episodes=150):
-    print(f"\n=== Running 2D Ablation Benchmarks ({num_episodes} Episodes) ===")
+def run_factorial_ablation_benchmarks(num_episodes=150):
+    print(f"\n=== Running 2x2 Factorial Ablation Benchmarks ({num_episodes} Episodes) ===")
     
-    # 1. Baseline
-    print("\nTraining Baseline (Standard Beta without Omega)...")
-    base_rewards, base_cols, base_model = train_agent(
-        D4EquivariantNet, num_episodes=num_episodes, seed=42, ablation_type="baseline"
-    )
+    # 1. Standard CNN, No Self-Imitation (alpha=0.0)
+    print("\n[1/4] Condition: Standard CNN (No Equivariance, No Self-Imitation)...")
+    r1, c1, _ = train_agent(StandardCNN, num_episodes=num_episodes, alpha=0.0, seed=42)
     
-    # 2. Ours Multiplicative
-    print("\nTraining Ours-Mult (Multiplicative Scaling)...")
-    mult_rewards, mult_cols, mult_model = train_agent(
-        D4EquivariantNet, num_episodes=num_episodes, seed=42, ablation_type="mult"
-    )
+    # 2. Equivariant Net Only (alpha=0.0)
+    print("\n[2/4] Condition: Equivariant Net Only (D4 Net, No Self-Imitation)...")
+    r2, c2, _ = train_agent(D4EquivariantNet, num_episodes=num_episodes, alpha=0.0, seed=42)
     
-    # 3. Ours Inverse
-    print("\nTraining Ours-Inv (Inverse Scaling)...")
-    inv_rewards, inv_cols, inv_model = train_agent(
-        D4EquivariantNet, num_episodes=num_episodes, seed=42, ablation_type="inv"
-    )
+    # 3. Self-Imitation Only (Standard CNN, alpha=0.1)
+    print("\n[3/4] Condition: Self-Imitation Only (Standard CNN + Dynamic KL)...")
+    r3, c3, _ = train_agent(StandardCNN, num_episodes=num_episodes, alpha=0.1, seed=42)
     
-    # Plot moving averages of rewards
-    plt.figure(figsize=(8, 5))
+    # 4. Full Proposed Method (D4 Net + Dynamic KL + Orbit Uncertainty Mult Scaling)
+    print("\n[4/4] Condition: Full Method (D4 Net + Dynamic KL + Orbit Uncertainty)...")
+    r4, c4, _ = train_agent(D4EquivariantNet, num_episodes=num_episodes, alpha=0.1, ablation_type="mult", seed=42)
     
     def smooth(y, box_pts=15):
         box = np.ones(box_pts)/box_pts
-        y_smooth = np.convolve(y, box, mode='same')
-        return y_smooth
+        return np.convolve(y, box, mode='same')
         
-    plt.plot(smooth(base_rewards), label="Baseline (No $\Omega(s)$ Scaling)", color="gray", linestyle="--", linewidth=1.8)
-    plt.plot(smooth(mult_rewards), label=r"Ours-Mult ($g(\Omega) = \frac{\Omega}{\Omega + \lambda}$)", color="blue", linewidth=2.2)
-    plt.plot(smooth(inv_rewards), label=r"Ours-Inv ($g(\Omega) = \frac{\lambda}{\Omega + \lambda}$)", color="orange", linewidth=2.0)
+    plt.figure(figsize=(9, 5.5))
+    plt.plot(smooth(r1), label="Standard CNN (No Equiv, No SI)", color="gray", linestyle=":", linewidth=1.8)
+    plt.plot(smooth(r2), label="Equivariance Only (D4 Net, No SI)", color="forestgreen", linestyle="--", linewidth=2.0)
+    plt.plot(smooth(r3), label="Self-Imitation Only (Standard CNN + SI)", color="darkorange", linestyle="-.", linewidth=2.0)
+    plt.plot(smooth(r4), label=r"Full Method (D4 Net + SI + $\Omega(s)$ Scaling)", color="blue", linewidth=2.5)
     
     plt.xlabel("Episodes", fontsize=11)
     plt.ylabel("Return Moving Average", fontsize=11)
-    plt.title("Ablation Study of Orbit-Aware Regularization Schedules", fontsize=12)
+    plt.title("2x2 Factorial Ablation Analysis of Core Methodological Components", fontsize=12)
     plt.legend(fontsize=10)
     plt.grid(True, linestyle="--", alpha=0.5)
     plt.tight_layout()
-    plt.savefig("ablation_comparison_2d.png", dpi=300)
+    plt.savefig("factorial_ablation_2d.png", dpi=300)
     plt.close()
-    print("Saved plot to ablation_comparison_2d.png")
+    print("Saved plot to factorial_ablation_2d.png")
 
 if __name__ == "__main__":
     run_toy_proxy_validation()
-    run_2d_ablation_benchmarks(num_episodes=150)
+    run_factorial_ablation_benchmarks(num_episodes=150)
