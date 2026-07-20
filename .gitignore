@@ -14,3 +14,7 @@ __pycache__/
 
 # LaTeX source files (do not commit paper drafts)
 *.tex
+
+# Model checkpoints / weights
+checkpoints/
+*.pth

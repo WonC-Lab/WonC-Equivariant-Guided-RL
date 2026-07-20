@@ -45,7 +45,7 @@ class TestSO3Equivariance(unittest.TestCase):
         """
         # Test default reset
         obs = self.env.reset()
-        self.assertEqual(obs.shape, (3, 2))
+        self.assertEqual(obs.shape, (3, 3))
         
         # End-effector position
         ee_pos = obs[:, 0]
@@ -58,7 +58,7 @@ class TestSO3Equivariance(unittest.TestCase):
         
         # Test step function with zero action
         next_obs, reward, done, info = self.env.step([0.0, 0.0, 0.0])
-        self.assertEqual(next_obs.shape, (3, 2))
+        self.assertEqual(next_obs.shape, (3, 3))
         self.assertFalse(done)
 
     def test_vector_neurons_equivariance(self):
@@ -66,14 +66,14 @@ class TestSO3Equivariance(unittest.TestCase):
         Tests that the Vector Neuron network is SO(3)-equivariant for action
         and SO(3)-invariant for value.
         """
-        # Generate random observation inputs (batch_size=5, channels=2, space=3)
-        # Net takes (batch, 3, 2)
-        x = torch.randn(5, 3, 2)
+        # Generate random observation inputs (batch_size=5, channels=3, space=3)
+        # Net takes (batch, 3, 3)
+        x = torch.randn(5, 3, 3)
         
         # Generate a random rotation matrix R
         R = generate_random_so3_matrix() # Shape: (3, 3)
         
-        # Rotate inputs: x_rot = R * x (batch, 3, 2)
+        # Rotate inputs: x_rot = R * x (batch, 3, 3)
         # Using batch matrix multiplication
         x_rot = torch.matmul(R, x)
         
@@ -106,7 +106,7 @@ class TestSO3Equivariance(unittest.TestCase):
         Verifies that standard MLP is NOT equivariant/invariant.
         The rotation mapping should fail because standard MLPs do not enforce structural symmetry.
         """
-        x = torch.randn(5, 3, 2)
+        x = torch.randn(5, 3, 3)
         R = generate_random_so3_matrix()
         x_rot = torch.matmul(R, x)
         
